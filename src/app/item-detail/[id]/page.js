@@ -74,7 +74,7 @@ export default function ItemDetail(props){
                             </div>
 
                             <div className="mt-6">
-                                <Link href="#" onClick={()=> setPlaceBid(!placeBid)}  className="btn rounded-full bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white"><i className="mdi mdi-gavel"></i> Bid Now</Link>
+                                <Link href="#" onClick={()=> setPlaceBid(!placeBid)}  className="btn rounded-full bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white"><i className="mdi mdi-gavel"></i> Bid ahora</Link>
                                 <Link href="#" onClick={() => setBuyNow(!buyNow)} className="btn rounded-full bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white ms-1"><i className="mdi mdi-lightning-bolt"></i> Buy Now</Link>
                             </div>
 

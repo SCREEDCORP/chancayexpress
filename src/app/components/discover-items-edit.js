@@ -46,7 +46,7 @@ export default function DiscoverItems({ title, pagination, data, all }) {
                         href={`/item-detail/${item.id}`}
                         className="btn btn-sm rounded-full bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white inline-flex items-center"
                       >
-                        <i className="mdi mdi-lightning-bolt"></i> Buy Now{" "}
+                        <i className="mdi mdi-lightning-bolt"></i> Buy ahora{" "}
                       </Link>
                     </div>
 
