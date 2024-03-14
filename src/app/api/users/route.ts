@@ -25,6 +25,18 @@ const createSchema = z.object<
     .regex(/^[a-zA-Z0-9_]*$/)
     .transform((v) => (v === "null" ? null : v))
     .nullable(),
+  description: z
+    .string()
+    .transform((v) => (v === "null" ? null : v))
+    .nullable(),
+  direction: z
+    .string()
+    .transform((v) => (v === "null" ? null : v))
+    .nullable(),
+  phone: z
+    .string()
+    .transform((v) => (v === "null" ? null : v))
+    .nullable(),
 });
 
 async function createUser(req: NextRequest) {
@@ -36,6 +48,8 @@ async function createUser(req: NextRequest) {
     const parse = createSchema.safeParse(body);
 
     if (!parse.success) {
+      console.error(parse.error.issues);
+
       return NextResponse.json(
         {
           message: "Peticion invalida",
@@ -70,3 +84,4 @@ async function createUser(req: NextRequest) {
 }
 
 export { createUser as POST };
+

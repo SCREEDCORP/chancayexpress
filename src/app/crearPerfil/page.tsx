@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { NonNullableObject, ZodInferSchema } from "@/types";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 const NavbarLight = dynamic(() => import("../components/navbar-light"));
 
@@ -37,6 +39,9 @@ const schema = z.object<ZodInferSchema<NonNullableObject<CreateUser>>>({
       /^[a-zA-Z0-9_]*$/,
       "Nombre unico del negocio invalido. Solo puede contener letras, numeros y guiones bajos",
     ),
+  description: z.string(),
+  direction: z.string(),
+  phone: z.string(),
 });
 
 export default function CreatorProfile() {
@@ -45,17 +50,23 @@ export default function CreatorProfile() {
       const formData = new FormData();
 
       Object.entries(data).forEach(([key, value]) => {
-        if (value) {
-          formData.append(key, value);
-        }
+        formData.append(key, value);
+        // if (value) {
+        // }
       });
 
       formData.append("type", UserType.STORE);
 
       const res = await fetch("/api/users", {
         method: "POST",
-        body: JSON.stringify(data),
+        body: formData,
       });
+
+      if (!res.ok) {
+        const msg = await res.json();
+        throw new Error(msg.message);
+      }
+
       return res.json();
     },
   });
@@ -205,29 +216,48 @@ export default function CreatorProfile() {
                         />
                       </div> */}
                     </div>
-                    <div>
-                      <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-4">
-                        <FormField
-                          control={form.control}
-                          name="nameHandler"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Nombre unico del negocio</FormLabel>
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  placeholder="ChancayExpress"
-                                  value={field.value ?? undefined}
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                Este es el identificador de tu negocio
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <div>
+                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-4">
+                      <FormField
+                        control={form.control}
+                        name="nameHandler"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nombre unico del negocio</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="ChancayExpress"
+                                value={field.value ?? undefined}
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Este es el identificador de tu negocio
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Numero de Contacto:
+                              <span className="text-red-600">*</span>
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="957842135"
+                                value={field.value ?? undefined}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* <div>
                           <label className="form-label font-medium">
                             Numero de Contacto:{" "}
                             <span className="text-red-600">*</span>
@@ -239,28 +269,46 @@ export default function CreatorProfile() {
                             id="lastname"
                             name="name"
                           />
-                        </div>
-                      </div>
+                        </div> */}
+                    </div>
+                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-4">
+                      <FormField
+                        control={form.control}
+                        name="direction"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Direccion:</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="Av. Los Incas 123, Chancay"
+                                value={field.value ?? undefined}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                     <div className="grid grid-cols-1">
-                      <div className="mt-5">
-                        <label className="form-label font-medium">
-                          Descripcion:{" "}
-                        </label>
-                        <textarea
-                          name="comments"
-                          id="comments"
-                          className="form-input w-full text-[15px] py-2 px-3 h-28 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-2xl outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
-                          placeholder="Realiza una breve descripcion de tu negocio :"
-                        ></textarea>
-                      </div>
-                      <input
-                        type="submit"
-                        id="submit"
-                        name="send"
-                        className="btn bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white rounded-full mt-5 "
-                        value="Crear Perfil de Negocio"
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem className="mt-5">
+                            <FormLabel>Descripcion:</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Realiza una breve descripcion de tu negocio"
+                                className="resize-none"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
+                      <Button className="mt-5">Crear Perfil de Negocio</Button>
                     </div>
                   </form>
                 </Form>
