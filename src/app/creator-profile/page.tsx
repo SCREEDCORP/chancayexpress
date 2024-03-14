@@ -1,10 +1,9 @@
 "use client"; // This is a client component 👈🏽
-import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
 
-const DiscoverItems = dynamic(() => import("../components/discover-items"));
+import { ProductItem, ProductList } from "@/app/components/product";
+import { Modal } from "../components/modal";
 import { ExploreItems } from "../data/data";
 
 export default function CreatorProfile() {
@@ -15,12 +14,13 @@ export default function CreatorProfile() {
       "text-base",
       "text-black",
       "dark:text-white",
-      "dark:bg-slate-900"
+      "dark:bg-slate-900",
     );
   }, []);
 
   const [file, setFile] = useState("/images/blog/single.jpg");
   const [profile, setProfile] = useState("/images/avatar/1.jpg");
+  const [buyItemId, setBuyItemId] = React.useState<string | null>(null);
 
   function handleChange(e) {
     setFile(URL.createObjectURL(e.target.files[0]));
@@ -92,8 +92,18 @@ export default function CreatorProfile() {
             </div>
           </div>
         </div>
-        <DiscoverItems data={ExploreItems} />
+        <ProductList>
+          {ExploreItems.map((item, index) => (
+            <ProductItem
+              key={index}
+              {...item}
+              id={item.id.toString()}
+              onBuy={() => setBuyItemId(item.id.toString())}
+            />
+          ))}
+        </ProductList>
       </section>
+      <Modal itemId={buyItemId} onClose={() => setBuyItemId(null)} />
     </>
   );
 }

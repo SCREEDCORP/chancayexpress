@@ -15,8 +15,8 @@ export default function ItemDetail(props){
     const data  = ExploreItems.find((user) => user.id === parseInt(props.params.id));
 
     const [activeIndex, setIndex] = useState(0);
-    const [placeBid , setPlaceBid] = useState(false)
-    const [ buyNow, setBuyNow] =  useState(false)
+    const [placeBid, setPlaceBid] = useState(false);
+    const [buyNow, setBuyNow] = useState(false);
 
     useEffect(() => {
         document.documentElement.classList.add("dark");

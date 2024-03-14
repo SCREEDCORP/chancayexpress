@@ -1,15 +1,36 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+
 type ProductProps = {
   id: string;
   title: string;
   subtext: string;
   image: string;
   avatar: string;
+  onBuy: () => void;
 };
 
-export function Product(item: ProductProps) {
+export function ProductList({
+  children,
+  title,
+}: React.PropsWithChildren<{ title?: string }>) {
+  return (
+    <div className="container">
+      {title && (
+        <div className="grid grid-cols-1 text-center">
+          <h3 className="md:text-[30px] text-[26px] font-semibold">{title}</h3>
+        </div>
+      )}
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-10 gap-[30px]">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+export function ProductItem(item: ProductProps) {
   return (
     <div className="group relative overflow-hidden p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-100 dark:border-gray-800 hover:shadow-md dark:shadow-md hover:dark:shadow-gray-700 transition-all duration-500 hover:-mt-2 h-fit">
       <div className="relative overflow-hidden">
@@ -28,12 +49,9 @@ export function Product(item: ProductProps) {
         </div>
 
         <div className="absolute -bottom-20 group-hover:bottom-1/2 group-hover:translate-y-1/2 start-0 end-0 mx-auto text-center transition-all duration-500">
-          <Link
-            href={`/item-detail/${item.id}`}
-            className="btn btn-sm rounded-full bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white inline-flex items-center"
-          >
+          <Button onClick={item.onBuy}>
             <i className="mdi mdi-lightning-bolt"></i> Comprar ahora{" "}
-          </Link>
+          </Button>
         </div>
 
         <div className="absolute top-2 end-2 opacity-0 group-hover:opacity-100 transition-all duration-500">
