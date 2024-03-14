@@ -1,14 +1,70 @@
-"use client"; // This is a client component 👈🏽
-import React, { useEffect, useState } from "react";
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserType, type User } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import type { NonNullableObject, ZodInferSchema } from "@/types";
+
 const NavbarLight = dynamic(() => import("../components/navbar-light"));
-const Footer = dynamic(() => import("../components/footer"));
-const Switcher = dynamic(() => import("../components/switcher"));
+
+type CreateUser = Omit<
+  User,
+  "id" | "createdAt" | "updatedAt" | "emailVerified" | "image" | "type"
+>;
+
+const schema = z.object<ZodInferSchema<NonNullableObject<CreateUser>>>({
+  email: z.string(),
+  name: z.string(),
+  nameHandler: z
+    .string()
+    .regex(
+      /^[a-zA-Z0-9_]*$/,
+      "Nombre unico del negocio invalido. Solo puede contener letras, numeros y guiones bajos",
+    ),
+});
 
 export default function CreatorProfile() {
+  const { isPending, mutate } = useMutation({
+    mutationFn: async (data: z.infer<typeof schema>) => {
+      const formData = new FormData();
+
+      Object.entries(data).forEach(([key, value]) => {
+        if (value) {
+          formData.append(key, value);
+        }
+      });
+
+      formData.append("type", UserType.STORE);
+
+      const res = await fetch("/api/users", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      return res.json();
+    },
+  });
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    disabled: isPending,
+  });
+
   useEffect(() => {
     document.documentElement.classList.add("dark");
     document.body.classList.add(
@@ -16,15 +72,9 @@ export default function CreatorProfile() {
       "text-base",
       "text-black",
       "dark:text-white",
-      "dark:bg-slate-900"
+      "dark:bg-slate-900",
     );
   }, []);
-
-  const [file, setFile] = useState("/images/avatar/1.jpg");
-
-  function handleChange(e) {
-    setFile(URL.createObjectURL(e.target.files[0]));
-  }
 
   return (
     <>
@@ -55,12 +105,12 @@ export default function CreatorProfile() {
                   name="profile-image"
                   type="file"
                   className="hidden"
-                  onChange={handleChange}
+                  // onChange={handleChange}
                 />
                 <div>
                   <div className="relative h-28 w-28 rounded-full shadow-md dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800 overflow-hidden ml-7">
                     <Image
-                      src={file}
+                      src={"/images/avatar/1.jpg"}
                       placeholder="blur"
                       blurDataURL="/images/avatar/1.jpg"
                       className="rounded-full"
@@ -89,84 +139,131 @@ export default function CreatorProfile() {
                 Crea el Perfil de un Negocio:
               </h5>
               <div className="p-6 rounded-md shadow dark:shadow-gray-800 bg-white dark:bg-slate-900">
-                <form>
-                  <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
-                    <div>
-                      <label className="form-label font-medium">
-                        Nombre del Negocio :{" "}
-                        <span className="text-red-600">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
-                        placeholder="Nombre del Negocio:"
-                        id="firstname"
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit((data) => mutate(data))}>
+                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
+                      <FormField
+                        control={form.control}
                         name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nombre del Negocio</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="Chancay Express"
+                                value={field.value ?? undefined}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-                    <div>
-                      <label className="form-label font-medium">
-                        Email: <span className="text-red-600">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
-                        placeholder="Email:"
-                        id="lastname"
-                        name="name"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-4">
-                      <div>
-                        <label className="form-label font-medium ">
-                          Direccion : <span className="text-red-600">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
-                          placeholder="Direccion con referencias:"
-                          id="firstname"
-                          name="name"
-                        />
-                      </div>
-                      <div>
+
+                      {/* <div>
                         <label className="form-label font-medium">
-                          Numero de Contacto:{" "}
+                          Nombre del Negocio :{" "}
                           <span className="text-red-600">*</span>
                         </label>
                         <input
                           type="text"
                           className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
-                          placeholder="Numero del Negocio:"
+                          placeholder="Nombre del Negocio:"
+                          id="firstname"
+                          name="name"
+                        />
+                      </div> */}
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Email: <span className="text-red-600">*</span>
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="name@domain.com"
+                                value={field.value ?? undefined}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* <div>
+                        <label className="form-label font-medium">
+                          Email: <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
+                          placeholder="Email:"
                           id="lastname"
                           name="name"
                         />
+                      </div> */}
+                    </div>
+                    <div>
+                      <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-4">
+                        <FormField
+                          control={form.control}
+                          name="nameHandler"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Nombre unico del negocio</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  placeholder="ChancayExpress"
+                                  value={field.value ?? undefined}
+                                />
+                              </FormControl>
+                              <FormDescription>
+                                Este es el identificador de tu negocio
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <div>
+                          <label className="form-label font-medium">
+                            Numero de Contacto:{" "}
+                            <span className="text-red-600">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
+                            placeholder="Numero del Negocio:"
+                            id="lastname"
+                            name="name"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="grid grid-cols-1">
-                    <div className="mt-5">
-                      <label className="form-label font-medium">
-                        Descripcion:{" "}
-                      </label>
-                      <textarea
-                        name="comments"
-                        id="comments"
-                        className="form-input w-full text-[15px] py-2 px-3 h-28 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-2xl outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
-                        placeholder="Realiza una breve descripcion de tu negocio :"
-                      ></textarea>
+                    <div className="grid grid-cols-1">
+                      <div className="mt-5">
+                        <label className="form-label font-medium">
+                          Descripcion:{" "}
+                        </label>
+                        <textarea
+                          name="comments"
+                          id="comments"
+                          className="form-input w-full text-[15px] py-2 px-3 h-28 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-2xl outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
+                          placeholder="Realiza una breve descripcion de tu negocio :"
+                        ></textarea>
+                      </div>
+                      <input
+                        type="submit"
+                        id="submit"
+                        name="send"
+                        className="btn bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white rounded-full mt-5 "
+                        value="Crear Perfil de Negocio"
+                      />
                     </div>
-                    <input
-                      type="submit"
-                      id="submit"
-                      name="send"
-                      className="btn bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white rounded-full mt-5 "
-                      value="Crear Perfil de Negocio"
-                    />
-                  </div>
-                </form>
+                  </form>
+                </Form>
               </div>
 
               <div className="p-6 rounded-md shadow dark:shadow-gray-800 bg-white dark:bg-slate-900 mt-[30px]">
