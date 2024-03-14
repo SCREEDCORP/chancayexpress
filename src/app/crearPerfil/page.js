@@ -29,13 +29,8 @@ export default function CreatorProfile() {
   return (
     <>
       <NavbarLight />
-      <section
-        className="relative table w-full py-36  bg-bottom bg-no-repeat"
-        style={{ backgroundImage: "url('/images/bg/bg1.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900"></div>
-      </section>
-      <div className="relative">
+
+      <div className="relative mt-7">
         <div className="shape absolute start-0 end-0 sm:-bottom-px -bottom-[2px] overflow-hidden z-1 text-white dark:text-slate-900">
           <svg
             className="w-full h-auto"
@@ -84,27 +79,27 @@ export default function CreatorProfile() {
               </div>
 
               <p className="text-slate-400 mt-4 ">
-                Actualiza tu foto de perfil, recomendamos que tu imagen sea de
+                Sube tu foto de perfil, recomendamos que tu imagen sea de
                 400X400px.
               </p>
             </div>
 
             <div className="lg:col-span-9 md:col-span-8">
               <h5 className="text-lg font-semibold mb-4 text-center">
-                Informacion del Negocio:
+                Crea el Perfil de un Negocio:
               </h5>
               <div className="p-6 rounded-md shadow dark:shadow-gray-800 bg-white dark:bg-slate-900">
                 <form>
                   <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
                     <div>
                       <label className="form-label font-medium">
-                        Nombre tu Negocio :{" "}
+                        Nombre del Negocio :{" "}
                         <span className="text-red-600">*</span>
                       </label>
                       <input
                         type="text"
                         className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
-                        placeholder="Nombre tu Negocio:"
+                        placeholder="Nombre del Negocio:"
                         id="firstname"
                         name="name"
                       />
@@ -122,7 +117,35 @@ export default function CreatorProfile() {
                       />
                     </div>
                   </div>
-
+                  <div>
+                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-4">
+                      <div>
+                        <label className="form-label font-medium ">
+                          Direccion : <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
+                          placeholder="Direccion con referencias:"
+                          id="firstname"
+                          name="name"
+                        />
+                      </div>
+                      <div>
+                        <label className="form-label font-medium">
+                          Numero de Contacto:{" "}
+                          <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-2"
+                          placeholder="Numero del Negocio:"
+                          id="lastname"
+                          name="name"
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <div className="grid grid-cols-1">
                     <div className="mt-5">
                       <label className="form-label font-medium">
@@ -140,7 +163,7 @@ export default function CreatorProfile() {
                       id="submit"
                       name="send"
                       className="btn bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white rounded-full mt-5 "
-                      value="Save Changes"
+                      value="Crear Perfil de Negocio"
                     />
                   </div>
                 </form>
@@ -202,7 +225,8 @@ export default function CreatorProfile() {
                 </h5>
 
                 <p className="text-slate-400 mb-4">
-                  Estas seguro que deseas elinar el perfil de tu negocio? , recuerda que se eliminaran todos los datos de tu perfil.
+                  Estas seguro que deseas eliminar el perfil de tu negocio? ,
+                  recuerda que se borraran todos los datos de tu perfil.
                 </p>
 
                 <Link
