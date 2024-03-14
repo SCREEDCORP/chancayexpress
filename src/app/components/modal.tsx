@@ -1,95 +1,95 @@
 import Link from "next/link";
 import { MdClose } from "react-icons/md";
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 
 type ModalProps = {
-  itemId: string | null;
-  onClose: () => void;
+	itemId: string | null;
+	onClose: () => void;
 };
 
 export function Modal({ itemId, onClose }: ModalProps) {
-  return (
-    <div
-      className={`fixed z-50 overflow-hidden inset-0 m-auto justify-center items-center flex bg-gray-900 bg-opacity-50 dark:bg-opacity-80 ${itemId ? "" : "hidden"}`}
-    >
-      <div className="relative w-full h-auto max-w-md p-4">
-        <div className="relative bg-white dark:bg-slate-900 rounded-lg shadow dark:shadow-gray-800">
-          <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100 dark:border-gray-700">
-            <h5 className="text-xl font-semibold">Place a Bid</h5>
-            <button
-              type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-lg p-1.5 ms-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-            >
-              <MdClose onClick={() => onClose()} />
-            </button>
-          </div>
-          <div className="p-6">
-            <form className="text-start">
-              <div className="grid grid-cols-1">
-                <div className="mb-4">
-                  <label className="font-semibold">Your Bid Price:</label>
-                  <input
-                    name="etherium"
-                    id="number"
-                    type="number"
-                    className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-3"
-                    placeholder="00.00 ETH"
-                  />
-                </div>
+	return (
+		<div
+			className={`fixed inset-0 z-50 m-auto flex items-center justify-center overflow-hidden bg-gray-900 bg-opacity-50 dark:bg-opacity-80 ${itemId ? "" : "hidden"}`}
+		>
+			<div className='relative h-auto w-full max-w-md p-4'>
+				<div className='relative rounded-lg bg-white shadow dark:bg-slate-900 dark:shadow-gray-800'>
+					<div className='flex items-center justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-700'>
+						<h5 className='ml-16 text-xl font-semibold'>Realiza tu pedido</h5>
+						<button
+							type='button'
+							className='items-right ms-auto inline-flex rounded-lg bg-transparent p-1.5 text-lg text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white'
+						>
+							<MdClose onClick={() => onClose()} />
+						</button>
+					</div>
+					<div className='p-6'>
+						<form className='text-start'>
+							<div className='grid grid-cols-1'>
+								<div className='mb-4'>
+									<label className='font-semibold'>Cantidad de Pedido:</label>
+									<input
+										name='quantity'
+										id='number2'
+										type='number'
+										className='form-input mb-3 mt-3 h-10 w-full rounded-full border border-gray-200 bg-transparent px-3 py-2 text-[15px] outline-none focus:border-violet-600 focus:ring-0 dark:border-gray-800 dark:bg-slate-900 dark:text-slate-200 dark:focus:border-violet-600'
+										placeholder='0'
+									/>
+									<label className='font-semibold'>
+										Envia un mensaje adicional:
+									</label>
+									<Textarea
+										placeholder='Carne cocida en 3/4'
+										className='mt-2 resize-none'
+									/>
+								</div>
+							</div>
+						</form>
 
-                <div className="mb-4">
-                  <label className="font-semibold">Enter Your QTY:</label>
-                  <input
-                    name="quantity"
-                    id="number2"
-                    type="number"
-                    className="form-input w-full text-[15px] py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded-full outline-none border border-gray-200 focus:border-violet-600 dark:border-gray-800 dark:focus:border-violet-600 focus:ring-0 mt-3"
-                    placeholder="0"
-                  />
-                  <span className="text-slate-400 text-sm">
-                    <span className="text-slate-900 dark:text-white mt-1">
-                      Note:
-                    </span>{" "}
-                    Max. Qty 5
-                  </span>
-                </div>
-              </div>
-            </form>
+						<div className='border-t pt-4 dark:border-t-gray-800'>
+							<div className='flex justify-between'>
+								<p className='text-sm font-semibold'> Costo del pedido:</p>
+								<p className='text-sm font-semibold text-violet-600'>
+									{" "}
+									S/. 45{" "}
+								</p>
+							</div>
+							<div className='mt-1 flex justify-between'>
+								<p className='text-sm font-semibold'> Costo de Envio:</p>
+								<p className='text-sm font-semibold text-violet-600'>
+									{" "}
+									S/. 12{" "}
+								</p>
+							</div>
+							<div className='mt-1 flex justify-between'>
+								<p className='text-sm font-semibold'> Total :</p>
+								<p className='text-sm font-semibold text-violet-600'>
+									{" "}
+									S/. 47{" "}
+								</p>
+							</div>
+						</div>
 
-            <div className="pt-4 border-t dark:border-t-gray-800">
-              <div className="flex justify-between">
-                <p className="font-semibold text-sm"> You must bid at least:</p>
-                <p className="text-sm text-violet-600 font-semibold">
-                  {" "}
-                  1.22 ETH{" "}
-                </p>
-              </div>
-              <div className="flex justify-between mt-1">
-                <p className="font-semibold text-sm"> Service free:</p>
-                <p className="text-sm text-violet-600 font-semibold">
-                  {" "}
-                  0.05 ETH{" "}
-                </p>
-              </div>
-              <div className="flex justify-between mt-1">
-                <p className="font-semibold text-sm"> Total bid amount:</p>
-                <p className="text-sm text-violet-600 font-semibold">
-                  {" "}
-                  1.27 ETH{" "}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <Link
-                href="#"
-                className="btn rounded-full bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white w-full"
-              >
-                <i className="mdi mdi-gavel"></i> Place a Bid
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+						<div className='mt-4'>
+							<Link
+								href='#'
+								className='btn w-full rounded-full border-violet-600 bg-violet-600 text-white hover:border-violet-700 hover:bg-violet-700'
+							>
+								<i className='mdi mdi-cash'></i> Realizar Pago
+							</Link>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
