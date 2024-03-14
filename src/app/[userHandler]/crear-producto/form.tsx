@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserType, type User } from "@prisma/client";
+import type { Product } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -9,57 +9,49 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import type { NonNullableObject, ZodInferSchema } from "@/types";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import type { ReplaceNullableToOptional, ZodInferSchema } from "@/types";
 
-const NavbarLight = dynamic(() => import("../components/navbar-light"));
+const NavbarLight = dynamic(() => import("../../components/navbar-light"));
 
-type CreateUser = Omit<
-  User,
-  "id" | "createdAt" | "updatedAt" | "emailVerified" | "image" | "type"
->;
+type CreateProduct = Omit<
+  Product,
+  "id" | "createdAt" | "updatedAt" | "status" | "image" | "userId"
+> & {
+  // image: Blob;
+};
 
-const schema = z.object<ZodInferSchema<NonNullableObject<CreateUser>>>({
-  email: z.string(),
+const schema = z.object<
+  ZodInferSchema<ReplaceNullableToOptional<CreateProduct>>
+>({
+  costInCents: z.number({ coerce: true }).refine((n) => {
+    const decimalPart = n.toString().split(".")[1];
+    return decimalPart ? decimalPart.length <= 2 : true;
+  }, "El costo debe tener maximo 2 decimales"),
+  description: z.string().optional(),
+  // image: z.instanceof(Blob),
   name: z.string(),
-  nameHandler: z
-    .string()
-    .regex(
-      /^[a-zA-Z0-9_]*$/,
-      "Nombre unico del negocio invalido. Solo puede contener letras, numeros y guiones bajos",
-    ),
-  description: z.string(),
-  direction: z.string(),
-  phone: z.string(),
 });
 
-export default function CreatorProfile() {
+export function CreateProduct({ userId }: { userId: string }) {
   const { isPending, mutate } = useMutation({
-    mutationFn: async (data: z.infer<typeof schema>) => {
-      const formData = new FormData();
-
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value);
-        // if (value) {
-        // }
-      });
-
-      formData.append("type", UserType.STORE);
-
-      const res = await fetch("/api/users", {
+    mutationFn: async ({ costInCents, ...data }: z.infer<typeof schema>) => {
+      const res = await fetch(`/api/users/${userId}/products`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, costInCents: costInCents * 100 }),
       });
 
       if (!res.ok) {
@@ -147,7 +139,7 @@ export default function CreatorProfile() {
 
             <div className="lg:col-span-9 md:col-span-8">
               <h5 className="text-lg font-semibold mb-4 text-center">
-                Crea el Perfil de un Negocio:
+                Crea un Producto para tu Negocio:
               </h5>
               <div className="p-6 rounded-md shadow dark:shadow-gray-800 bg-white dark:bg-slate-900">
                 <Form {...form}>
@@ -158,11 +150,11 @@ export default function CreatorProfile() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Nombre del Negocio</FormLabel>
+                            <FormLabel>Nombre del Producto</FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
-                                placeholder="Chancay Express"
+                                placeholder="Hamburguesa"
                                 value={field.value ?? undefined}
                               />
                             </FormControl>
@@ -172,77 +164,17 @@ export default function CreatorProfile() {
                       />
                       <FormField
                         control={form.control}
-                        name="email"
+                        name="costInCents"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Email: <span className="text-red-600">*</span>
+                              Costo: <span className="text-red-600">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
-                                placeholder="name@domain.com"
-                                value={field.value ?? undefined}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-4">
-                      <FormField
-                        control={form.control}
-                        name="nameHandler"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Nombre unico del negocio</FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                placeholder="ChancayExpress"
-                                value={field.value ?? undefined}
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Este es el identificador de tu negocio
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              Numero de Contacto:
-                              <span className="text-red-600">*</span>
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                placeholder="957842135"
-                                value={field.value ?? undefined}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-4">
-                      <FormField
-                        control={form.control}
-                        name="direction"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Direccion:</FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                placeholder="Av. Los Incas 123, Chancay"
+                                type="number"
+                                placeholder="15.90"
                                 value={field.value ?? undefined}
                               />
                             </FormControl>
@@ -260,7 +192,7 @@ export default function CreatorProfile() {
                             <FormLabel>Descripcion:</FormLabel>
                             <FormControl>
                               <Textarea
-                                placeholder="Realiza una breve descripcion de tu negocio"
+                                placeholder="Realiza una breve descripcion del producto"
                                 className="resize-none"
                                 {...field}
                               />
@@ -270,7 +202,7 @@ export default function CreatorProfile() {
                         )}
                       />
                       <Button className="mt-5" disabled={isPending}>
-                        Crear Perfil de Negocio
+                        Crear Producto de Negocio
                       </Button>
                     </div>
                   </form>

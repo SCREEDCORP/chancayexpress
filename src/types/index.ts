@@ -1,5 +1,33 @@
 import type { z } from "zod";
 
+type PickNullable<T> = {
+  [P in keyof T as null extends T[P] ? P : never]: T[P];
+};
+
+type PickNotNullable<T> = {
+  [P in keyof T as null extends T[P] ? never : P]: T[P];
+};
+
+type OptionalNullable<T> = {
+  [K in keyof PickNullable<T>]?: Exclude<T[K], null>;
+} & {
+  [K in keyof PickNotNullable<T>]: T[K];
+};
+
+export type ReplaceDateToString<Obj> = {
+  [K in keyof Obj]: IsNullable<Obj[K]> extends true
+    ? Exclude<Obj[K], null> extends Date
+      ? string | null
+      : Obj[K]
+    : Obj[K] extends Date
+      ? string
+      : Obj[K] extends object
+        ? ReplaceDateToString<Obj[K]>
+        : Obj[K];
+};
+
+export type ReplaceNullableToOptional<Obj> = Prettify<OptionalNullable<Obj>>;
+
 export type Equals<X, Y> =
   (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
     ? true
