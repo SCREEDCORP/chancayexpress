@@ -5,10 +5,10 @@ import { useMutation } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -19,9 +19,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import type { NonNullableObject, ZodInferSchema } from "@/types";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import type { NonNullableObject, ZodInferSchema } from "@/types";
 
 const NavbarLight = dynamic(() => import("../components/navbar-light"));
 
@@ -75,17 +74,6 @@ export default function CreatorProfile() {
     resolver: zodResolver(schema),
     disabled: isPending,
   });
-
-  useEffect(() => {
-    document.documentElement.classList.add("dark");
-    document.body.classList.add(
-      "font-urbanist",
-      "text-base",
-      "text-black",
-      "dark:text-white",
-      "dark:bg-slate-900",
-    );
-  }, []);
 
   return (
     <>

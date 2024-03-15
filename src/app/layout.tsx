@@ -18,8 +18,10 @@ export const metadata = {
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <html lang="en" dir="LTR">
-      <body className={`${urbanist.variable}`}>
+    <html lang="en" dir="LTR" className="dark">
+      <body
+        className={`${urbanist.variable} font-urbanist text-base text-black dark:bg-slate-900 dark:text-white dark`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

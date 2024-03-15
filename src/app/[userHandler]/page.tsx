@@ -1,22 +1,28 @@
-"use client"; // This is a client component 👈🏽
 import Image from "next/image";
-import React, { useState } from "react";
+import { notFound } from "next/navigation";
 
-import { ProductItem, ProductList } from "@/app/components/product";
-import { Modal } from "../components/modal";
-import { ExploreItems } from "../data/data";
+import { db } from "@/server/db";
+import { StoreProducts } from "./store-products";
 
-export default function CreatorProfile() {
-  const [file, setFile] = useState("/images/blog/single.jpg");
-  const [profile, setProfile] = useState("/images/avatar/1.jpg");
-  const [buyItemId, setBuyItemId] = React.useState<string | null>(null);
+type Context = {
+  params: {
+    userHandler: string;
+  };
+};
 
-  function handleChange(e: any) {
-    setFile(URL.createObjectURL(e.target.files[0]));
-  }
-  function ProfileChange(e: any) {
-    setProfile(URL.createObjectURL(e.target.files[0]));
-  }
+export const dynamic = "force-dynamic";
+
+export default async function CreatorProfile({ params }: Context) {
+  const user = await db.user.findUnique({
+    where: {
+      nameHandler: params.userHandler,
+    },
+    include: {
+      products: true,
+    },
+  });
+
+  if (!user) return notFound();
 
   return (
     <>
@@ -28,7 +34,7 @@ export default function CreatorProfile() {
               name="profile-banner"
               type="file"
               className="hidden"
-              onChange={handleChange}
+              // onChange={handleChange}
             />
             <label
               className="absolute inset-0 cursor-pointer"
@@ -46,12 +52,12 @@ export default function CreatorProfile() {
                   name="profile-image"
                   type="file"
                   className="hidden"
-                  onChange={ProfileChange}
+                  // onChange={ProfileChange}
                 />
                 <div>
                   <div className="relative h-28 w-28 mx-auto rounded-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800 overflow-hidden">
                     <Image
-                      src={profile}
+                      src={"/images/avatar/1.jpg"}
                       placeholder="blur"
                       blurDataURL="/images/avatar/1.jpg"
                       className="rounded-full"
@@ -71,29 +77,29 @@ export default function CreatorProfile() {
 
               <div className="mt-6">
                 <h5 className="text-xl font-semibold">
-                  Jenny Jimenez{" "}
+                  {user.name}{" "}
                   <i className="mdi mdi-check-decagram text-emerald-600 align-middle text-lg"></i>
                 </h5>
-                <p className="text-slate-400 text-[16px] mt-1">Descripcion</p>
+                <p className="text-slate-400 text-[16px] mt-1">
+                  {user.description}
+                </p>
 
                 <div className="mt-4"></div>
               </div>
             </div>
           </div>
         </div>
-        <ProductList>
-          {ExploreItems.map((item, index) => (
-            <ProductItem
-              key={index}
-              {...item}
-              id={item.id.toString()}
-              price="100"
-              onBuy={() => setBuyItemId(item.id.toString())}
-            />
-          ))}
-        </ProductList>
+        <StoreProducts
+          products={user.products.map((p) => ({
+            id: p.id,
+            title: p.name,
+            subtext: p.description ?? "",
+            priceInCents: p.costInCents,
+            image: "/images/items/beef.jpg",
+            avatar: "/images/avatar/1.jpg",
+          }))}
+        />
       </section>
-      <Modal itemId={buyItemId} onClose={() => setBuyItemId(null)} />
     </>
   );
 }

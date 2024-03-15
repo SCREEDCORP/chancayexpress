@@ -3,12 +3,13 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-type ProductProps = {
+export type ProductProps = {
   id: string;
   title: string;
   subtext: string;
   image: string;
   avatar: string;
+  price: string;
   onBuy: () => void;
 };
 
@@ -95,21 +96,21 @@ export function ProductItem(item: ProductProps) {
         <div className="flex justify-between p-2 bg-gray-50 dark:bg-slate-800 rounded-lg shadow dark:shadow-gray-700">
           <div>
             <span className="text-[16px] font-medium text-slate-400 block">
-              Price
+              Costo
             </span>
             <span className="text-[16px] font-semibold block">
-              <i className="mdi mdi-ethereum"></i> 3.5 ETH
+              <i className="mdi mdi-ethereum"></i> {item.price}
             </span>
           </div>
 
-          <div>
+          {/* <div>
             <span className="text-[16px] font-medium text-slate-400 block">
               Highest Bid
             </span>
             <span className="text-[16px] font-semibold block">
               <i className="mdi mdi-ethereum"></i> 3.5 ETH
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

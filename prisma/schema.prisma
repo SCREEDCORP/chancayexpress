@@ -15,17 +15,19 @@ datasource db {
 }
 
 model ProductRequest {
-  id        String               @id @default(uuid())
-  status    ProductRequestStatus
-  quantity  Int
-  direction String?
-  code      String               @unique
+  id          String               @id @default(uuid())
+  status      ProductRequestStatus
+  quantity    Int
+  description String?
+  code        String               @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  // userId String
+  // user   User   @relation(fields: [userId], references: [id])
 
   @@map("product_requests")
 }
@@ -39,6 +41,8 @@ model Product {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
+
+  requests ProductRequest[]
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -60,8 +64,8 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
 
-  products        Product[]
-  productRequests ProductRequest[]
+  products Product[]
+  // productRequests ProductRequest[]
 
   accounts Account[]
   sessions Session[]

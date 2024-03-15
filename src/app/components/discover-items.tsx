@@ -20,13 +20,29 @@ export default function DiscoverItems({ title, pagination, data, all }: any) {
         {all ? (
           <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-10 gap-[30px]">
             {ExploreItems.map((item, index) => {
-              return <ProductItem key={index} {...item} id={item.id.toString()} />;
+              return (
+                <ProductItem
+                  key={index}
+                  {...item}
+                  id={item.id.toString()}
+                  price={"100"}
+                  onBuy={() => {}}
+                />
+              );
             })}
           </div>
         ) : (
           <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-10 gap-[30px]">
             {ExploreItems.slice(0, 8).map((item, index) => {
-              return <ProductItem key={index} {...item} id={item.id.toString()} />;
+              return (
+                <ProductItem
+                  key={index}
+                  {...item}
+                  id={item.id.toString()}
+                  price={"100"}
+                  onBuy={() => {}}
+                />
+              );
             })}
           </div>
         )}

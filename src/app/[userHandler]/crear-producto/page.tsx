@@ -9,6 +9,8 @@ type Context = {
   };
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function CreateProductPage({ params }: Context) {
   const user = await db.user.findUnique({
     where: { nameHandler: params.userHandler },
