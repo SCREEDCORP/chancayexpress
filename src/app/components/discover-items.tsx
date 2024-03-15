@@ -26,7 +26,8 @@ export default function DiscoverItems({ title, pagination, data, all }: any) {
                   {...item}
                   id={item.id.toString()}
                   price={"100"}
-                  onBuy={() => {}}
+                  onAction={() => {}}
+                  action=""
                 />
               );
             })}
@@ -40,7 +41,8 @@ export default function DiscoverItems({ title, pagination, data, all }: any) {
                   {...item}
                   id={item.id.toString()}
                   price={"100"}
-                  onBuy={() => {}}
+                  onAction={() => {}}
+                  action=""
                 />
               );
             })}
