@@ -29,10 +29,12 @@ const schema = z.object<
   ZodInferSchema<{
     quantity: number;
     description?: string;
+    deliveryPriceInCents: number;
   }>
 >({
   quantity: z.number({ coerce: true }).min(1, "La cantidad debe ser mayor a 0"),
   description: z.string().optional(),
+  deliveryPriceInCents: z.number({ coerce: true }),
 });
 
 export function BuyProductModal({
@@ -41,13 +43,19 @@ export function BuyProductModal({
   productId,
 }: ModalProps) {
   const { isPending, mutate } = useMutation({
-    mutationFn: async (data: z.infer<typeof schema>) => {
+    mutationFn: async ({
+      deliveryPriceInCents,
+      ...data
+    }: z.infer<typeof schema>) => {
       const res = await fetch(`/api/products/${productId}/buy`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          deliveryPriceInCents: deliveryPriceInCents * 100,
+        }),
       });
 
       if (!res.ok) {
@@ -67,10 +75,11 @@ export function BuyProductModal({
     resolver: zodResolver(schema),
     defaultValues: {
       quantity: 1,
+      deliveryPriceInCents: 12,
     },
   });
 
-  const { quantity } = form.watch();
+  const { quantity, deliveryPriceInCents } = form.watch();
 
   return (
     <div
@@ -156,15 +165,39 @@ export function BuyProductModal({
                     </p>
                   </div>
                   <div className="mt-1 flex justify-between">
-                    <p className="text-sm font-semibold"> Costo de Envio:</p>
+                    <FormField
+                      control={form.control}
+                      name="deliveryPriceInCents"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="grid grid-cols-3 items-center">
+                            <FormLabel className="col-span-2">
+                              Costo de Envio:
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="number"
+                                placeholder="12"
+                                value={field.value ?? undefined}
+                              />
+                            </FormControl>
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {/* <p className="text-sm font-semibold"> Costo de Envio:</p>
                     <p className="text-sm font-semibold text-violet-600">
                       {formatPrice(1200)}
-                    </p>
+                    </p> */}
                   </div>
                   <div className="mt-1 flex justify-between">
                     <p className="text-sm font-semibold"> Total :</p>
                     <p className="text-sm font-semibold text-violet-600">
-                      {formatPrice(1200 + quantity * individualCost)}
+                      {formatPrice(
+                        deliveryPriceInCents * 100 + quantity * individualCost,
+                      )}
                     </p>
                   </div>
                 </div>

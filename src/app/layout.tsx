@@ -12,8 +12,8 @@ const urbanist = Urbanist({
 });
 
 export const metadata = {
-  title: "Giglink - Next Js NFT Marketplace Template",
-  description: "Next Js NFT Marketplace Template",
+  title: "Chancay Express",
+  description: "Delivery YA!",
 };
 
 export default function RootLayout({ children }: React.PropsWithChildren) {

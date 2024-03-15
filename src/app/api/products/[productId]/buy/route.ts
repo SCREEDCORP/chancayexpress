@@ -10,12 +10,19 @@ const schema = z.object<
   ZodInferSchema<
     Omit<
       ProductRequest,
-      "id" | "createdAt" | "updatedAt" | "code" | "productId" | "status"
+      | "id"
+      | "createdAt"
+      | "updatedAt"
+      | "code"
+      | "productId"
+      | "status"
+      | "requestPriceInCents"
     >
   >
 >({
   quantity: z.number(),
   description: z.string().nullable(),
+  deliveryPriceInCents: z.number(),
 });
 
 async function buyProduct(
@@ -52,12 +59,24 @@ async function buyProduct(
       );
     }
 
+    if (!product.status) {
+      return NextResponse.json(
+        {
+          message: "El producto no esta disponible",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
     const newRequest = await db.productRequest.create({
       data: {
         ...parse.data,
         productId,
         status: ProductRequestStatus.INACTIVE,
         code: createCode(),
+        requestPriceInCents: product.costInCents * parse.data.quantity,
       },
     });
 

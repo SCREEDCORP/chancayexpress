@@ -30,6 +30,9 @@ export default async function Activity({ params }: Context) {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return (
