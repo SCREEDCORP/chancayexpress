@@ -77,7 +77,7 @@ export default function CreatorProfile() {
 
   return (
     <>
-      <NavbarLight />
+      {/* <NavbarLight /> */}
 
       <div className="relative mt-7">
         <div className="shape absolute start-0 end-0 sm:-bottom-px -bottom-[2px] overflow-hidden z-1 text-white dark:text-slate-900">

@@ -6,8 +6,8 @@ import {
   ProductList,
   type ProductProps,
 } from "@/app/components/product";
-import { BuyProductModal } from "./buy-product-modal";
 import { formatPrice } from "@/lib/utils";
+import { DeleteProductModal } from "./delete-product-modal";
 
 export function StoreProducts({
   products,
@@ -27,16 +27,14 @@ export function StoreProducts({
             {...item}
             price={formatPrice(item.priceInCents)}
             onAction={() => setProductId(item.id)}
-            action="Comprar ahora"
+            action="Eliminar"
           />
         ))}
       </ProductList>
       {productId && (
-        <BuyProductModal
+        <DeleteProductModal
           productId={productId}
-          individualCost={
-            products.find((p) => p.id === productId)?.priceInCents ?? 0
-          }
+          productName={products.find((p) => p.id === productId)?.title ?? ""}
           onClose={() => setProductId(null)}
         />
       )}

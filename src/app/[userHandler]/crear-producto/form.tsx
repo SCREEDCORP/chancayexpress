@@ -5,7 +5,6 @@ import { useMutation } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -68,20 +67,9 @@ export function CreateProduct({ userId }: { userId: string }) {
     disabled: isPending,
   });
 
-  useEffect(() => {
-    document.documentElement.classList.add("dark");
-    document.body.classList.add(
-      "font-urbanist",
-      "text-base",
-      "text-black",
-      "dark:text-white",
-      "dark:bg-slate-900",
-    );
-  }, []);
-
   return (
     <>
-      <NavbarLight />
+      {/* <NavbarLight /> */}
 
       <div className="relative mt-7">
         <div className="shape absolute start-0 end-0 sm:-bottom-px -bottom-[2px] overflow-hidden z-1 text-white dark:text-slate-900">

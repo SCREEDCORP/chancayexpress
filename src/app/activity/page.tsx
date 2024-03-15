@@ -17,6 +17,9 @@ export default async function Activity() {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return (

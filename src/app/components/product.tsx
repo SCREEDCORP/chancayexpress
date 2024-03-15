@@ -10,7 +10,8 @@ export type ProductProps = {
   image: string;
   avatar: string;
   price: string;
-  onBuy: () => void;
+  onAction: () => void;
+  action: string;
 };
 
 export function ProductList({
@@ -50,8 +51,8 @@ export function ProductItem(item: ProductProps) {
         </div>
 
         <div className="absolute -bottom-20 group-hover:bottom-1/2 group-hover:translate-y-1/2 start-0 end-0 mx-auto text-center transition-all duration-500">
-          <Button onClick={item.onBuy}>
-            <i className="mdi mdi-lightning-bolt"></i> Comprar ahora{" "}
+          <Button onClick={item.onAction}>
+            <i className="mdi mdi-lightning-bolt"></i> {item.action}{" "}
           </Button>
         </div>
 

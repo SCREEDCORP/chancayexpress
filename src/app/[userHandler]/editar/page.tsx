@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { db } from "@/server/db";
@@ -88,7 +89,20 @@ export default async function CreatorProfile({ params }: Context) {
                   {user.description}
                 </p>
 
-                <div className="mt-4"></div>
+                <div className="mt-4">
+                  <Link
+                    href={`/${user.nameHandler}/crear-producto`}
+                    className="btn btn-sm rounded-full bg-violet-600 hover:bg-violet-700 border-violet-600 hover:border-violet-700 text-white mx-1"
+                  >
+                    <i className="mdi mdi-plus"></i> Plato Nuevo
+                  </Link>
+                  {/* <Link
+                    href="/creator-profile-edit"
+                    className="btn btn-icon btn-sm rounded-full bg-violet-600/5 hover:bg-violet-600 border-violet-600/10 hover:border-violet-600 text-violet-600 hover:text-white mx-1"
+                  >
+                    <i className="mdi mdi-cog"></i>
+                  </Link> */}
+                </div>
               </div>
             </div>
           </div>
