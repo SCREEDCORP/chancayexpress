@@ -88,7 +88,8 @@ export default function CreatorProfile() {
               {...item}
               id={item.id.toString()}
               price="100"
-              onBuy={() => setBuyItemId(item.id.toString())}
+              onAction={() => {}}
+              action=""
             />
           ))}
         </ProductList>
