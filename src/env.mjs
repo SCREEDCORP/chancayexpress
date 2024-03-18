@@ -9,6 +9,9 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
     DATABASE_URL: z.string(),
+    AWS_ACCESS_KEY: z.string(),
+    AWS_SECRET_ACCESS_KEY: z.string(),
+    S3_BUCKET_NAME: z.string(),
   },
 
   /**
@@ -18,6 +21,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+    NEXT_PUBLIC_S3_BUCKET_NAME: z.string(),
   },
 
   /**
@@ -29,6 +33,11 @@ export const env = createEnv({
     // DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
+    AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+    S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
+
+    NEXT_PUBLIC_S3_BUCKET_NAME: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
