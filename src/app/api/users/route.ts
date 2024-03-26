@@ -6,9 +6,7 @@ import { db } from "@/server/db";
 import type { ZodInferSchema } from "@/types";
 
 const createSchema = z.object<
-	ZodInferSchema<
-		Omit<User, "id" | "createdAt" | "updatedAt" | "emailVerified" | "image">
-	>
+	ZodInferSchema<Omit<User, "id" | "createdAt" | "updatedAt" | "emailVerified">>
 >({
 	type: z.nativeEnum(UserType),
 	email: z
@@ -37,6 +35,10 @@ const createSchema = z.object<
 		.transform(v => (v === "null" ? null : v))
 		.nullable(),
 	phone: z
+		.string()
+		.transform(v => (v === "null" ? null : v))
+		.nullable(),
+	image: z
 		.string()
 		.transform(v => (v === "null" ? null : v))
 		.nullable(),
@@ -106,3 +108,4 @@ async function getUsers(req: NextRequest) {
 }
 
 export { getUsers as GET, createUser as POST };
+
