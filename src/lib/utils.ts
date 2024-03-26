@@ -25,9 +25,10 @@ export function getBucketObjectInfo({
 	buckerName,
 }: GetBucketSignedUrlParams & { buckerName: string }) {
 	const parsedKey = key.replaceAll(" ", "_");
+	const finalKey = (privateFile ? "" : "public/") + parsedKey;
 
 	return {
-		key: privateFile ? "" : "public/" + parsedKey,
-		objectUrl: `https://${buckerName}.s3.sa-east-1.amazonaws.com/${parsedKey}`,
+		key: finalKey,
+		objectUrl: `https://${buckerName}.s3.sa-east-1.amazonaws.com/${finalKey}`,
 	};
 }

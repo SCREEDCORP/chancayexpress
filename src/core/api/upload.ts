@@ -32,21 +32,22 @@ export class UploadClass {
 		 * The presigned url to upload the file
 		 */
 		url: string;
-	}): Promise<APIResponseSimple> {
+	}): Promise<APIResponse<boolean>> {
 		const res = await fetch(url, {
 			method: "PUT",
 			headers: {
 				"Content-Type": file.type,
+				"Content-Length": new Blob([file]).size.toString(),
 			},
 			body: file,
 		});
 
 		if (!res.ok) {
-			const json = (await res.json()) as APIResponse<undefined>;
-
-			throw new Error(json.message);
+			// const json = (await res.json()) as APIResponse<undefined>;
+			// console.log(json);
+			throw new Error("Error");
 		}
 
-		return res.json();
+		return { data: true, message: "Solicitud exitosa" };
 	}
 }

@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Product } from "@prisma/client";
+import { UserType, type User } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import {
 	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -23,32 +24,32 @@ import { API } from "@/core/api";
 import { env } from "@/env.mjs";
 import { useInputFile } from "@/hooks/use-input-file";
 import { getBucketObjectInfo } from "@/lib/utils";
-import type { ReplaceNullableToOptional, ZodInferSchema } from "@/types";
+import type { NonNullableObject, ZodInferSchema } from "@/types";
 
-const NavbarLight = dynamic(() => import("../../components/navbar-light"));
+const NavbarLight = dynamic(() => import("./components/navbar-light"));
 
-type CreateProduct = Omit<
-	Product,
-	"id" | "createdAt" | "updatedAt" | "status" | "image" | "userId"
-> & {
-	// image: Blob;
-};
+type CreateUser = Omit<
+	User,
+	"id" | "createdAt" | "updatedAt" | "emailVerified" | "image" | "type"
+>;
 
-const schema = z.object<
-	ZodInferSchema<ReplaceNullableToOptional<CreateProduct>>
->({
-	costInCents: z.number({ coerce: true }).refine(n => {
-		const decimalPart = n.toString().split(".")[1];
-		return decimalPart ? decimalPart.length <= 2 : true;
-	}, "El costo debe tener maximo 2 decimales"),
-	description: z.string().optional(),
-	// image: z.instanceof(Blob),
+const schema = z.object<ZodInferSchema<NonNullableObject<CreateUser>>>({
+	email: z.string(),
 	name: z.string(),
+	nameHandler: z
+		.string()
+		.regex(
+			/^[a-zA-Z0-9_]*$/,
+			"Nombre unico del negocio invalido. Solo puede contener letras, numeros y guiones bajos",
+		),
+	description: z.string(),
+	direction: z.string(),
+	phone: z.string(),
 });
 
 const PROFILE_IMAGE_INPUT_ID = "profile-image-input-id";
 
-export function CreateProduct({ userId }: { userId: string }) {
+export default function CreatorProfile() {
 	const { inputValue, clearInput, image, onChangeValue } = useInputFile({
 		resizerOptions: {
 			compressFormat: "JPEG",
@@ -66,15 +67,23 @@ export function CreateProduct({ userId }: { userId: string }) {
 	});
 
 	const { isPending, mutate } = useMutation({
-		mutationFn: async ({ costInCents, ...data }: z.infer<typeof schema>) => {
-			let image = "";
+		mutationFn: async (data: z.infer<typeof schema>) => {
+			const formData = new FormData();
+
+			Object.entries(data).forEach(([key, value]) => {
+				formData.append(key, value);
+				// if (value) {
+				// }
+			});
+
+			formData.append("type", UserType.STORE);
 
 			if (inputValue) {
 				const urlRes = await API.upload.getPresignedUrl({
 					key: inputValue.name,
 				});
 
-				const asd = await API.upload.uploadFile({
+				await API.upload.uploadFile({
 					file: inputValue,
 					url: urlRes.data,
 				});
@@ -84,23 +93,12 @@ export function CreateProduct({ userId }: { userId: string }) {
 					buckerName: env.NEXT_PUBLIC_S3_BUCKET_NAME,
 				});
 
-				console.log({ objectUrl });
-
-				return;
-
-				image = objectUrl;
+				formData.append("image", objectUrl);
 			}
 
-			const res = await fetch(`/api/users/${userId}/products`, {
+			const res = await fetch("/api/users", {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					...data,
-					costInCents: costInCents * 100,
-					image: image || null,
-				}),
+				body: formData,
 			});
 
 			if (!res.ok) {
@@ -109,6 +107,9 @@ export function CreateProduct({ userId }: { userId: string }) {
 			}
 
 			return res.json();
+		},
+		onSuccess: () => {
+			clearInput();
 		},
 	});
 
@@ -177,7 +178,7 @@ export function CreateProduct({ userId }: { userId: string }) {
 
 						<div className='md:col-span-8 lg:col-span-9'>
 							<h5 className='mb-4 text-center text-lg font-semibold'>
-								Crea un Producto para tu Negocio:
+								Crea el Perfil de un Negocio:
 							</h5>
 							<div className='rounded-md bg-white p-6 shadow dark:bg-slate-900 dark:shadow-gray-800'>
 								<Form {...form}>
@@ -188,11 +189,11 @@ export function CreateProduct({ userId }: { userId: string }) {
 												name='name'
 												render={({ field }) => (
 													<FormItem>
-														<FormLabel>Nombre del Producto</FormLabel>
+														<FormLabel>Nombre del Negocio</FormLabel>
 														<FormControl>
 															<Input
 																{...field}
-																placeholder='Hamburguesa'
+																placeholder='Chancay Express'
 																value={field.value ?? undefined}
 															/>
 														</FormControl>
@@ -202,17 +203,77 @@ export function CreateProduct({ userId }: { userId: string }) {
 											/>
 											<FormField
 												control={form.control}
-												name='costInCents'
+												name='email'
 												render={({ field }) => (
 													<FormItem>
 														<FormLabel>
-															Costo: <span className='text-red-600'>*</span>
+															Email: <span className='text-red-600'>*</span>
 														</FormLabel>
 														<FormControl>
 															<Input
 																{...field}
-																type='number'
-																placeholder='15.90'
+																placeholder='name@domain.com'
+																value={field.value ?? undefined}
+															/>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+										</div>
+										<div className='mt-4 grid grid-cols-1 gap-5 lg:grid-cols-2'>
+											<FormField
+												control={form.control}
+												name='nameHandler'
+												render={({ field }) => (
+													<FormItem>
+														<FormLabel>Nombre unico del negocio</FormLabel>
+														<FormControl>
+															<Input
+																{...field}
+																placeholder='ChancayExpress'
+																value={field.value ?? undefined}
+															/>
+														</FormControl>
+														<FormDescription>
+															Este es el identificador de tu negocio
+														</FormDescription>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+											<FormField
+												control={form.control}
+												name='phone'
+												render={({ field }) => (
+													<FormItem>
+														<FormLabel>
+															Numero de Contacto:
+															<span className='text-red-600'>*</span>
+														</FormLabel>
+														<FormControl>
+															<Input
+																{...field}
+																placeholder='957842135'
+																value={field.value ?? undefined}
+															/>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+										</div>
+										<div className='mt-4 grid grid-cols-1 gap-5 lg:grid-cols-2'>
+											<FormField
+												control={form.control}
+												name='direction'
+												render={({ field }) => (
+													<FormItem>
+														<FormLabel>Direccion:</FormLabel>
+														<FormControl>
+															<Input
+																{...field}
+																placeholder='Av. Los Incas 123, Chancay'
 																value={field.value ?? undefined}
 															/>
 														</FormControl>
@@ -230,7 +291,7 @@ export function CreateProduct({ userId }: { userId: string }) {
 														<FormLabel>Descripcion:</FormLabel>
 														<FormControl>
 															<Textarea
-																placeholder='Realiza una breve descripcion del producto'
+																placeholder='Realiza una breve descripcion de tu negocio'
 																className='resize-none'
 																{...field}
 															/>
@@ -240,7 +301,7 @@ export function CreateProduct({ userId }: { userId: string }) {
 												)}
 											/>
 											<Button className='mt-5' disabled={isPending}>
-												Crear Producto de Negocio
+												Crear Perfil de Negocio
 											</Button>
 										</div>
 									</form>

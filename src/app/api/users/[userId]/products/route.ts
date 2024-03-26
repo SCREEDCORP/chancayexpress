@@ -7,21 +7,16 @@ import type { ZodInferSchema } from "@/types";
 
 const createSchema = z.object<
 	ZodInferSchema<
-		Omit<
-			Product,
-			"id" | "createdAt" | "updatedAt" | "status" | "image" | "userId"
-		> & {
+		Omit<Product, "id" | "createdAt" | "updatedAt" | "status" | "userId"> & {
 			// image: Blob;
 		}
 	>
 >({
 	costInCents: z.number({ coerce: true }),
-	description: z
-		.string()
-		.transform(f => (f === "null" ? null : f))
-		.nullable(),
+	description: z.string().nullable(),
 	// image: z.instanceof(Blob),
 	name: z.string(),
+	image: z.string().nullable(),
 });
 
 async function createProduct(
@@ -62,7 +57,6 @@ async function createProduct(
 		const product = await db.product.create({
 			data: {
 				...parse.data,
-				image: null,
 				user: {
 					connect: {
 						id: params.userId,
@@ -133,4 +127,4 @@ async function getUserByIdWithProducts(
 	}
 }
 
-export { createProduct as POST, getUserByIdWithProducts as GET };
+export { getUserByIdWithProducts as GET, createProduct as POST };

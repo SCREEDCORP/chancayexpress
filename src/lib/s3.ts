@@ -17,10 +17,11 @@ export async function getBucketSignedUrl({
 	privateFile,
 }: GetBucketSignedUrlParams) {
 	const parsedKey = key.replaceAll(" ", "_");
+	const finalKey = (privateFile ? "" : "public/") + parsedKey;
 
 	const command = new PutObjectCommand({
 		Bucket: env.S3_BUCKET_NAME,
-		Key: privateFile ? "" : "public/" + parsedKey,
+		Key: finalKey,
 	});
 
 	return getSignedUrl(s3Client, command, {
@@ -43,7 +44,7 @@ export class S3Object {
 	}: Required<GetBucketSignedUrlParams> & { file: File | Blob }) {
 		const parsedKey = key.replaceAll(" ", "_");
 
-		this.key = privateFile ? "" : "public/" + parsedKey;
+		this.key = (privateFile ? "" : "public/") + parsedKey;
 		this.privateFile = privateFile;
 		this.objectUrl = `https://${env.S3_BUCKET_NAME}.s3.sa-east-1.amazonaws.com/${this.key}`;
 		this.signedUrl = null;

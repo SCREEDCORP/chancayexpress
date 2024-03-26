@@ -7,9 +7,9 @@ await import("./src/env.mjs");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: false,
-  // images: {
-  //   domains: ["my-box-bucket.s3.sa-east-1.amazonaws.com"],
-  // },
+  images: {
+    domains: ["chancayexpress.s3.sa-east-1.amazonaws.com"],
+  },
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
    * out.

@@ -20,7 +20,11 @@ export type FailedAPIResponseSimple = {
 	errors?: z.ZodIssue[];
 };
 
-export type APIResponse<T> = SuccessAPIResponse<T> | FailedAPIResponse;
+export type APIResponse<T> = {
+	data: T;
+	message: string;
+};
+
 export type APIResponseSimple =
 	| SuccessAPIResponseSimple
 	| FailedAPIResponseSimple;
