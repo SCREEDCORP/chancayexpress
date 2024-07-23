@@ -25,7 +25,7 @@ import { useInputFile } from "@/hooks/use-input-file";
 import { getBucketObjectInfo } from "@/lib/utils";
 import type { ReplaceNullableToOptional, ZodInferSchema } from "@/types";
 
-const NavbarLight = dynamic(() => import("../../components/navbar-light"));
+const NavbarLight = dynamic(() => import("../../../components/navbar-light"));
 
 type CreateProduct = Omit<
 	Product,
