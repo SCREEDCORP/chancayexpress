@@ -61,7 +61,7 @@ export default async function CreatorProfile({ params }: Context) {
 								<div>
 									<div className='relative mx-auto h-28 w-28 overflow-hidden rounded-full shadow ring-4 ring-slate-50 dark:shadow-gray-800 dark:ring-slate-800'>
 										<Image
-											src={"/images/avatar/1.jpg"}
+											src={user.image ?? "/images/avatar/1.jpg"}
 											placeholder='blur'
 											blurDataURL='/images/avatar/1.jpg'
 											className='rounded-full'

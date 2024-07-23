@@ -63,7 +63,7 @@ export default async function CreatorProfile({ params }: Context) {
 								<div>
 									<div className='relative mx-auto h-28 w-28 overflow-hidden rounded-full shadow ring-4 ring-slate-50 dark:shadow-gray-800 dark:ring-slate-800'>
 										<Image
-											src={"/images/avatar/1.jpg"}
+											src={user.image ?? "/images/avatar/1.jpg"}
 											placeholder='blur'
 											blurDataURL='/images/avatar/1.jpg'
 											className='rounded-full'
@@ -93,7 +93,7 @@ export default async function CreatorProfile({ params }: Context) {
 
 								<div className='mt-4'>
 									<Link
-										href={`/perfil/${user.nameHandler}/crear-producto`}
+										href={`/perfil/${params.userHandler}/crear-producto`}
 										className='btn btn-sm mx-1 rounded-full border-violet-600 bg-violet-600 text-white hover:border-violet-700 hover:bg-violet-700'
 									>
 										<i className='mdi mdi-plus'></i> Plato Nuevo
@@ -115,7 +115,7 @@ export default async function CreatorProfile({ params }: Context) {
 						title: p.name,
 						subtext: p.description ?? "",
 						priceInCents: p.costInCents,
-						image: "/images/items/beef.jpg",
+						image: p.image ?? "/images/items/beef.jpg",
 						avatar: "/images/avatar/1.jpg",
 					}))}
 				/>

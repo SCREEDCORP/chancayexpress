@@ -67,7 +67,10 @@ async function createUser(req: NextRequest) {
 		const { data } = parse;
 
 		const user = await db.user.create({
-			data,
+			data: {
+				...data,
+				nameHandler: data.nameHandler?.toLowerCase(),
+			},
 		});
 
 		console.log({ user });
@@ -108,4 +111,3 @@ async function getUsers(req: NextRequest) {
 }
 
 export { getUsers as GET, createUser as POST };
-

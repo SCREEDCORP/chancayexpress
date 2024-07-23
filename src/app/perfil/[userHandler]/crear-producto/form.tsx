@@ -25,8 +25,6 @@ import { useInputFile } from "@/hooks/use-input-file";
 import { getBucketObjectInfo } from "@/lib/utils";
 import type { ReplaceNullableToOptional, ZodInferSchema } from "@/types";
 
-const NavbarLight = dynamic(() => import("../../../components/navbar-light"));
-
 type CreateProduct = Omit<
 	Product,
 	"id" | "createdAt" | "updatedAt" | "status" | "image" | "userId"
@@ -85,8 +83,6 @@ export function CreateProduct({ userId }: { userId: string }) {
 				});
 
 				console.log({ objectUrl });
-
-				return;
 
 				image = objectUrl;
 			}

@@ -232,7 +232,10 @@ export default function CreatorProfile() {
 															<Input
 																{...field}
 																placeholder='ChancayExpress'
-																value={field.value ?? undefined}
+																value={field.value ?? ""}
+																onChange={e =>
+																	field.onChange(e.target.value.toLowerCase())
+																}
 															/>
 														</FormControl>
 														<FormDescription>
