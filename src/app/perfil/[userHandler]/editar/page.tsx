@@ -93,7 +93,7 @@ export default async function CreatorProfile({ params }: Context) {
 
 								<div className='mt-4'>
 									<Link
-										href={`/${user.nameHandler}/crear-producto`}
+										href={`/perfil/${user.nameHandler}/crear-producto`}
 										className='btn btn-sm mx-1 rounded-full border-violet-600 bg-violet-600 text-white hover:border-violet-700 hover:bg-violet-700'
 									>
 										<i className='mdi mdi-plus'></i> Plato Nuevo
