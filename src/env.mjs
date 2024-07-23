@@ -33,9 +33,7 @@ export const env = createEnv({
 		// DATABASE_URL: process.env.DATABASE_URL,
 		NODE_ENV: process.env.NODE_ENV,
 		DATABASE_URL: process.env.DATABASE_URL,
-		AWS_ACCESS_KEY: process.env.CE_AWS_ACCESS_KEY,
 		CE_AWS_ACCESS_KEY: process.env.CE_AWS_ACCESS_KEY,
-		AWS_SECRET_ACCESS_KEY: process.env.CE_AWS_SECRET_ACCESS_KEY,
 		CE_AWS_SECRET_ACCESS_KEY: process.env.CE_AWS_SECRET_ACCESS_KEY,
 		S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
 
