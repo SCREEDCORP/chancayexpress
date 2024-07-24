@@ -41,6 +41,7 @@ export default function CreatorProfile() {
           <div className="md:w-full">
             <div className="relative -mt-[60px] text-center">
               <div className="group profile-pic w-[112px] mx-auto">
+                
                 <input
                   id="pro-img"
                   name="profile-image"
@@ -50,6 +51,7 @@ export default function CreatorProfile() {
                 />
                 <div>
                   <div className="relative h-28 w-28 mx-auto rounded-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800 overflow-hidden">
+                  <h1>hola</h1>
                     <Image
                       src={profile}
                       placeholder="blur"

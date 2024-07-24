@@ -166,7 +166,7 @@ export function CreateProduct({ userId }: { userId: string }) {
 							</div>
 
 							<p className='mt-4 text-slate-400 '>
-								Sube tu foto de perfil, recomendamos que tu imagen sea de
+								Sube una foto de tu producto, recomendamos que tu imagen sea de
 								400X400px.
 							</p>
 						</div>
@@ -241,24 +241,6 @@ export function CreateProduct({ userId }: { userId: string }) {
 										</div>
 									</form>
 								</Form>
-							</div>
-
-							<div className='mt-[30px] rounded-md bg-white p-6 shadow dark:bg-slate-900 dark:shadow-gray-800'>
-								<h5 className='mb-5 text-lg font-semibold text-red-600'>
-									Eliminar Cuenta :
-								</h5>
-
-								<p className='mb-4 text-slate-400'>
-									Estas seguro que deseas eliminar el perfil de tu negocio? ,
-									recuerda que se borraran todos los datos de tu perfil.
-								</p>
-
-								<Link
-									href='/'
-									className='btn rounded-full border-red-600 bg-red-600 text-white hover:border-red-700 hover:bg-red-700'
-								>
-									Delete
-								</Link>
 							</div>
 						</div>
 					</div>

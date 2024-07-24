@@ -55,27 +55,12 @@ export function ProductItem(item: ProductProps) {
 					</Button>
 				</div>
 
-				<div className='absolute end-2 top-2 opacity-0 transition-all duration-500 group-hover:opacity-100'>
-					<Link
-						href='#'
-						className='btn btn-icon btn-sm rounded-full border-violet-600 bg-violet-600 text-white hover:border-violet-700 hover:bg-violet-700'
-					>
-						<i className='mdi mdi-plus'></i>
-					</Link>
-				</div>
+				
 			</div>
 
 			<div className='mt-3'>
 				<div className='flex items-center'>
-					<Image
-						src={item.avatar}
-						className='h-8 w-8 rounded-full'
-						alt=''
-						width={32}
-						height={32}
-						placeholder='blur'
-						blurDataURL={item.avatar}
-					/>
+					
 					<Link
 						// href={`/item-detail/${item.id}`}
 						href='#'
@@ -85,7 +70,7 @@ export function ProductItem(item: ProductProps) {
 					</Link>
 				</div>
 
-				<div className='my-3'>
+				<div className='my-3;' >
 					<Link
 						// href={`/item-detail/${item.id}`}
 						href='#'
@@ -97,11 +82,11 @@ export function ProductItem(item: ProductProps) {
 
 				<div className='flex justify-between rounded-lg bg-gray-50 p-2 shadow dark:bg-slate-800 dark:shadow-gray-700'>
 					<div>
-						<span className='block text-[16px] font-medium text-slate-400'>
-							Costo
+						<span className='block text-[16px] font-medium'>
+							<i className='mdi '></i> {item.price}
 						</span>
 						<span className='block text-[16px] font-semibold'>
-							<i className='mdi mdi-ethereum'></i> {item.price}
+							
 						</span>
 					</div>
 

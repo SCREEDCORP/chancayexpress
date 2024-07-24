@@ -311,7 +311,7 @@ export default function CreatorProfile() {
 								</Form>
 							</div>
 
-							<div className='mt-[30px] rounded-md bg-white p-6 shadow dark:bg-slate-900 dark:shadow-gray-800'>
+							{/* <div className='mt-[30px] rounded-md bg-white p-6 shadow dark:bg-slate-900 dark:shadow-gray-800'>
 								<h5 className='mb-5 text-lg font-semibold text-red-600'>
 									Eliminar Cuenta :
 								</h5>
@@ -327,7 +327,7 @@ export default function CreatorProfile() {
 								>
 									Delete
 								</Link>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>

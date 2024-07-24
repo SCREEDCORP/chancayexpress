@@ -31,7 +31,7 @@ export default async function CreatorProfile({ params }: Context) {
 	return (
 		<>
 			<section className='relative pb-16 md:pb-24 lg:mt-24 '>
-				<div className='container-fluid lg:container '>
+				<div className='container-fluid lg:container mt-10'>
 					<div className='profile-banner group relative overflow-hidden text-transparent shadow dark:shadow-gray-700 lg:rounded-xl'>
 						<input
 							id='pro-banner'
@@ -46,7 +46,7 @@ export default async function CreatorProfile({ params }: Context) {
 						></label>
 					</div>
 				</div>
-
+			
 				<div className='mt-10 justify-center md:flex'>
 					<div className='md:w-full'>
 						<div className='relative -mt-[60px] text-center'>
