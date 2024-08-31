@@ -3,16 +3,31 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-export type ProductProps = {
-	id: string;
-	title: string;
-	subtext: string;
-	image: string;
-	avatar: string;
-	price: string;
-	onAction: () => void;
-	action: string;
-};
+export type ProductProps =
+	| {
+			id: string;
+			title: string;
+			titleLink?: string;
+			subtext: string;
+			subtextLink?: string;
+			image: string | null;
+			avatar: string;
+			price: string;
+			onAction: () => void;
+			action: string;
+	  }
+	| {
+			id: string;
+			title: string;
+			titleLink?: string;
+			subtext: string;
+			subtextLink?: string;
+			image: string | null;
+			avatar: string;
+			price?: string;
+			onAction?: () => void;
+			action?: string;
+	  };
 
 export function ProductList({
 	children,
@@ -32,65 +47,72 @@ export function ProductList({
 	);
 }
 
-export function ProductItem(item: ProductProps) {
+export function ProductItem({
+	avatar,
+	id,
+	image,
+	price,
+	subtext,
+	title,
+	action,
+	onAction,
+	subtextLink,
+	titleLink,
+}: ProductProps) {
 	return (
 		<div className='group relative h-fit overflow-hidden rounded-lg border border-gray-100 bg-white p-2 transition-all duration-500 hover:-mt-2 hover:shadow-md dark:border-gray-800 dark:bg-slate-900 dark:shadow-md hover:dark:shadow-gray-700'>
 			<div className='relative overflow-hidden'>
 				<div className='relative overflow-hidden rounded-lg'>
 					<Image
-						src={item.image}
+						src={image ?? "/images/avatar/2.jpg"}
 						className='h-auto max-h-[130px] w-full rounded-lg object-cover shadow-md transition-all duration-500 group-hover:scale-110 dark:shadow-gray-700'
-						alt={`${item.title} image`}
+						alt={`${title} image`}
 						width={0}
 						height={0}
 						sizes='100vw'
 						placeholder='blur'
-						blurDataURL={item.image}
+						blurDataURL={image ?? undefined}
 					/>
 				</div>
 
-				<div className='absolute -bottom-20 end-0 start-0 mx-auto text-center transition-all duration-500 group-hover:bottom-1/2 group-hover:translate-y-1/2'>
-					<Button onClick={item.onAction}>
-						<i className='mdi mdi-lightning-bolt'></i> {item.action}{" "}
-					</Button>
-				</div>
-
-				
+				{!!action && (
+					<div className='absolute -bottom-20 end-0 start-0 mx-auto text-center transition-all duration-500 group-hover:bottom-1/2 group-hover:translate-y-1/2'>
+						<Button onClick={onAction}>
+							<i className='mdi mdi-lightning-bolt'></i> {action}{" "}
+						</Button>
+					</div>
+				)}
 			</div>
 
 			<div className='mt-3'>
 				<div className='flex items-center'>
-					
 					<Link
-						// href={`/item-detail/${item.id}`}
-						href='#'
+						href={subtextLink ?? "#"}
 						className='ms-2 text-[15px] font-medium text-slate-400 hover:text-violet-600'
 					>
-						{item.subtext}
+						{subtext}
 					</Link>
 				</div>
 
-				<div className='my-3;' >
+				<div className='my-3;'>
 					<Link
-						// href={`/item-detail/${item.id}`}
-						href='#'
+						href={titleLink ?? "#"}
 						className='font-semibold hover:text-violet-600'
 					>
-						{item.title}
+						{title}
 					</Link>
 				</div>
 
-				<div className='flex justify-between rounded-lg bg-gray-50 p-2 shadow dark:bg-slate-800 dark:shadow-gray-700'>
-					<div>
-						<span className='block text-[16px] font-medium'>
-							<i className='mdi '></i> {item.price}
-						</span>
-						<span className='block text-[16px] font-semibold'>
-							
-						</span>
-					</div>
+				{price !== undefined && (
+					<div className='flex justify-between rounded-lg bg-gray-50 p-2 shadow dark:bg-slate-800 dark:shadow-gray-700'>
+						<div>
+							<span className='block text-[16px] font-medium'>
+								<i className='mdi '></i> {price}
+							</span>
+							<span className='block text-[16px] font-semibold'></span>
+						</div>
 
-					{/* <div>
+						{/* <div>
             <span className="text-[16px] font-medium text-slate-400 block">
               Highest Bid
             </span>
@@ -98,7 +120,8 @@ export function ProductItem(item: ProductProps) {
               <i className="mdi mdi-ethereum"></i> 3.5 ETH
             </span>
           </div> */}
-				</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);

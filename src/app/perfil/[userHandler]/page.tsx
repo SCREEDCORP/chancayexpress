@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import Navbar from "@/app/components/navbar";
 import { db } from "@/server/db";
 import { StoreProducts } from "./store-products";
 
@@ -30,8 +31,9 @@ export default async function CreatorProfile({ params }: Context) {
 
 	return (
 		<>
+			<Navbar />
 			<section className='relative pb-16 md:pb-24 lg:mt-24 '>
-				<div className='container-fluid lg:container mt-10'>
+				<div className='container-fluid mt-10 lg:container'>
 					<div className='profile-banner group relative overflow-hidden text-transparent shadow dark:shadow-gray-700 lg:rounded-xl'>
 						<input
 							id='pro-banner'
@@ -46,7 +48,7 @@ export default async function CreatorProfile({ params }: Context) {
 						></label>
 					</div>
 				</div>
-			
+
 				<div className='mt-10 justify-center md:flex'>
 					<div className='md:w-full'>
 						<div className='relative -mt-[60px] text-center'>
