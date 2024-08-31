@@ -12,6 +12,12 @@ export const env = createEnv({
 		CE_AWS_ACCESS_KEY: z.string(),
 		CE_AWS_SECRET_ACCESS_KEY: z.string(),
 		S3_BUCKET_NAME: z.string(),
+		M4D_APP_ID: z.string(),
+		M4D_APP_SECRET: z.string(),
+		WA_BUSINESS_ACCOUNT_ID: z.string(),
+		CLOUD_API_VERSION: z.string(),
+		CLOUD_API_ACCESS_TOKEN: z.string(),
+		SENDER_NUMBER: z.number({ coerce: true }),
 	},
 
 	/**
@@ -38,6 +44,13 @@ export const env = createEnv({
 		S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
 
 		NEXT_PUBLIC_S3_BUCKET_NAME: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
+
+		M4D_APP_ID: process.env.M4D_APP_ID,
+		M4D_APP_SECRET: process.env.M4D_APP_SECRET,
+		WA_BUSINESS_ACCOUNT_ID: process.env.WA_BUSINESS_ACCOUNT_ID,
+		CLOUD_API_VERSION: process.env.CLOUD_API_VERSION,
+		CLOUD_API_ACCESS_TOKEN: process.env.CLOUD_API_ACCESS_TOKEN,
+		SENDER_NUMBER: process.env.SENDER_NUMBER,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
