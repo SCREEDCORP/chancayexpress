@@ -3,31 +3,19 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-export type ProductProps =
-	| {
-			id: string;
-			title: string;
-			titleLink?: string;
-			subtext: string;
-			subtextLink?: string;
-			image: string | null;
-			avatar: string;
-			price: string;
-			onAction: () => void;
-			action: string;
-	  }
-	| {
-			id: string;
-			title: string;
-			titleLink?: string;
-			subtext: string;
-			subtextLink?: string;
-			image: string | null;
-			avatar: string;
-			price?: string;
-			onAction?: () => void;
-			action?: string;
-	  };
+export type ProductProps = {
+	id: string;
+	title: string;
+	titleLink?: string;
+	subtext: string;
+	subtextLink?: string;
+	image: string | null;
+	avatar: string;
+	price?: string;
+	onAction?: () => void;
+	action?: string;
+	actionLink?: string;
+};
 
 export function ProductList({
 	children,
@@ -58,6 +46,7 @@ export function ProductItem({
 	onAction,
 	subtextLink,
 	titleLink,
+	actionLink,
 }: ProductProps) {
 	return (
 		<div className='group relative h-fit overflow-hidden rounded-lg border border-gray-100 bg-white p-2 transition-all duration-500 hover:-mt-2 hover:shadow-md dark:border-gray-800 dark:bg-slate-900 dark:shadow-md hover:dark:shadow-gray-700'>
@@ -75,12 +64,22 @@ export function ProductItem({
 					/>
 				</div>
 
-				{!!action && (
+				{actionLink ? (
 					<div className='absolute -bottom-20 end-0 start-0 mx-auto text-center transition-all duration-500 group-hover:bottom-1/2 group-hover:translate-y-1/2'>
-						<Button onClick={onAction}>
-							<i className='mdi mdi-lightning-bolt'></i> {action}{" "}
+						<Button asChild>
+							<Link href={actionLink}>
+								<i className='mdi mdi-lightning-bolt'></i> Comprar
+							</Link>
 						</Button>
 					</div>
+				) : (
+					!!action && (
+						<div className='absolute -bottom-20 end-0 start-0 mx-auto text-center transition-all duration-500 group-hover:bottom-1/2 group-hover:translate-y-1/2'>
+							<Button onClick={onAction}>
+								<i className='mdi mdi-lightning-bolt'></i> {action}{" "}
+							</Button>
+						</div>
+					)
 				)}
 			</div>
 

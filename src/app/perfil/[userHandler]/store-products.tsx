@@ -26,8 +26,7 @@ export function StoreProducts({
 						key={index}
 						{...item}
 						price={formatPrice(item.priceInCents)}
-						onAction={() => setProductId(item.id)}
-						action='Comprar ahora'
+						actionLink={`/comprar-producto/${item.id}`}
 					/>
 				))}
 			</ProductList>

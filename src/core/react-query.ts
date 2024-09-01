@@ -1,20 +1,14 @@
-import { QueryClient } from "@tanstack/react-query";
+import type { QueryClientConfig } from "@tanstack/react-query";
 
-import { toast } from "@/components/ui/use-toast";
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-    mutations: {
-      onError: (error) => {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      },
-    },
-  },
-});
+export const reactQueryConfig = {
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+		},
+		mutations: {
+			// react-query-kit use this field for middleware purposes
+			// cannot redeclare with declare module
+			// use: [mutationMiddleware],
+		},
+	},
+} as QueryClientConfig;

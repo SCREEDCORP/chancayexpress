@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
 import { db } from "@/server/db";
+import { sendTemplateMessage } from "@/server/ws";
 import type { ZodInferSchema } from "@/types";
 
 const createSchema = z.object<
@@ -66,11 +67,19 @@ async function createUser(req: NextRequest) {
 
 		const { data } = parse;
 
-		const user = await db.user.create({
-			data: {
-				...data,
-				nameHandler: data.nameHandler?.toLowerCase(),
-			},
+		const user = await db.$transaction(async tx => {
+			const user = await tx.user.create({
+				data: {
+					...data,
+					nameHandler: data.nameHandler?.toLowerCase(),
+				},
+			});
+
+			if (user.type === UserType.STORE && user.phone) {
+				await sendTemplateMessage(user.phone);
+			}
+
+			return user;
 		});
 
 		console.log({ user });

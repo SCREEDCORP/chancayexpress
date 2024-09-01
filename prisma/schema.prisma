@@ -60,7 +60,7 @@ model Product {
 model PaymentMethod {
   id    Int               @id @default(autoincrement())
   type  PaymentMethodType
-  image String
+  image String?
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
