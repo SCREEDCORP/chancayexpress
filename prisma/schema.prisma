@@ -23,14 +23,18 @@ model ProductRequest {
   code                 String               @unique
   deliveryPriceInCents Int
   requestPriceInCents  Int
+  deliveryAddress      String
+  clientPhone          String
+
+  whatsappMessageId String? @unique
+
+  methodId  Int
+  method    PaymentMethod @relation(fields: [methodId], references: [id])
+  productId String
+  product   Product       @relation(fields: [productId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-  // userId String
-  // user   User   @relation(fields: [userId], references: [id])
 
   @@map("product_requests")
 }
@@ -53,6 +57,23 @@ model Product {
   @@map("products")
 }
 
+model PaymentMethod {
+  id    Int               @id @default(autoincrement())
+  type  PaymentMethodType
+  image String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  requests ProductRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([type, userId])
+  @@map("payment_method")
+}
+
 model User {
   id            String    @id @default(uuid())
   type          UserType
@@ -64,8 +85,11 @@ model User {
   phone         String?
   emailVerified DateTime?
   image         String?   @db.Text
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+
+  paymentMethods PaymentMethod[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   products Product[]
   // productRequests ProductRequest[]
@@ -127,9 +151,19 @@ enum UserType {
 }
 
 enum ProductRequestStatus {
+  PENDING_APPROVAL
+  REJECTED
   INACTIVE
   IN_CHICKEN
   TO_DELIVER
 
   @@map("product_request_statuses")
+}
+
+enum PaymentMethodType {
+  EFECTIVO
+  YAPE
+  PLIN
+
+  @@map("payment_method")
 }
