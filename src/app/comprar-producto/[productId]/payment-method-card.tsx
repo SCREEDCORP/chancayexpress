@@ -5,7 +5,8 @@ import { CheckCircleIcon } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/app/components/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { paymentMethodIconMap, paymentMethodNameMap } from "@/core/constants";
+import { paymentMethodIconMap } from "@/core/configs";
+import { paymentMethodNameMap } from "@/core/constants";
 import { useProductContext } from "./context";
 
 export function PaymentMethodCard({ methods }: { methods: PaymentMethod[] }) {
