@@ -1,8 +1,6 @@
 "use client";
 import type { PaymentMethod } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
 
-import { updatePaymentMethodAction } from "@/actions/payment-methods";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -13,7 +11,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { mockActionResponseFromAPI } from "@/core/api";
+import { useUpdatePaymentMethod } from "@/core/queries/payment-methods";
 import { useActionModal } from "@/hooks/use-action-modal";
 
 export function DeletePaymentMethodModal({
@@ -23,13 +21,7 @@ export function DeletePaymentMethodModal({
 }: Pick<PaymentMethod, "id" | "type" | "status">) {
 	const { onOpenChange, open } = useActionModal();
 
-	const { mutateAsync, isPending: disabled } = useMutation({
-		mutationFn: () => {
-			return mockActionResponseFromAPI(updatePaymentMethodAction)({
-				id,
-				status: !status,
-			});
-		},
+	const { mutateAsync, isPending: disabled } = useUpdatePaymentMethod({
 		onSuccess: () => {
 			onOpenChange(false);
 		},
@@ -57,7 +49,12 @@ export function DeletePaymentMethodModal({
 				<DialogFooter>
 					<Button
 						disabled={disabled}
-						onClick={() => mutateAsync()}
+						onClick={() =>
+							mutateAsync({
+								id,
+								status: !status,
+							})
+						}
 						variant='destructive'
 					>
 						{disabled ? "Confirmando..." : "Confirmar"}

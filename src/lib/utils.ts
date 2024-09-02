@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { twMerge } from "tailwind-merge";
 
 import { paymentMethodsTypes } from "@/core/constants";
+import { STORAGE_ROUTES } from "@/core/storage-routes";
 import type { GetBucketSignedUrlParams } from "./s3";
 
 export function cn(...inputs: ClassValue[]) {
@@ -37,4 +38,14 @@ export function getBucketObjectInfo({
 
 export function getPaymentMethodsShift(methodTypes: PaymentMethodType[]) {
 	return paymentMethodsTypes.filter(m => !methodTypes.includes(m));
+}
+
+export function generateStorageKey({
+	file,
+	prefix,
+}: {
+	prefix: keyof typeof STORAGE_ROUTES;
+	file: File;
+}) {
+	return `${STORAGE_ROUTES[prefix]}/${crypto.randomUUID()}.${file.name.split(".").at(-1)}`;
 }

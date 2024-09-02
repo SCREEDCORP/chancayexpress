@@ -1,18 +1,15 @@
 "use server";
-import { PaymentMethodType } from "@prisma/client";
 import { z } from "zod";
 
+import {
+	createPaymentMethodSchema,
+	updatePaymentMethodSchema,
+} from "@/schemas/payment-methods";
 import { db } from "@/server/db";
 import { actionClient } from ".";
 
 export const createPaymentMethodAction = actionClient
-	.schema(
-		z.object({
-			type: z.nativeEnum(PaymentMethodType),
-			image: z.string().optional(),
-			userId: z.string(),
-		}),
-	)
+	.schema(createPaymentMethodSchema)
 	.action(async ({ parsedInput }) => {
 		const paymentMethod = await db.paymentMethod.findUnique({
 			where: {
@@ -31,13 +28,7 @@ export const createPaymentMethodAction = actionClient
 	});
 
 export const updatePaymentMethodAction = actionClient
-	.schema(
-		z.object({
-			id: z.number(),
-			image: z.string().optional(),
-			status: z.boolean().optional(),
-		}),
-	)
+	.schema(updatePaymentMethodSchema)
 	.action(async ({ parsedInput: { id, ...data } }) => {
 		const paymentMethod = await db.paymentMethod.findUnique({
 			where: {

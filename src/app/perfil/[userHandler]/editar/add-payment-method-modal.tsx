@@ -1,11 +1,8 @@
 "use client";
 import type { PaymentMethodType } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React from "react";
 
-import { createPaymentMethodAction } from "@/actions/payment-methods";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -16,10 +13,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { API, mockActionResponseFromAPI } from "@/core/api";
-import { env } from "@/env.mjs";
 import { useInputFile } from "@/hooks/use-input-file";
-import { getBucketObjectInfo } from "@/lib/utils";
+import { useAddPaymentMethod } from "@/queries/payment-methods";
 
 export function AddPaymentMethodModal({
 	children,
@@ -28,7 +23,6 @@ export function AddPaymentMethodModal({
 }: React.PropsWithChildren<{ userId: string; type: PaymentMethodType }>) {
 	const [open, setOpen] = React.useState(false);
 
-	const router = useRouter();
 	const INPUT_ID = React.useId();
 
 	const { clearInput, image, inputValue, onChangeValue } = useInputFile({
@@ -46,35 +40,14 @@ export function AddPaymentMethodModal({
 		inputId: INPUT_ID,
 	});
 
-	const { mutateAsync, isPending: disabled } = useMutation({
-		mutationFn: async () => {
-			if (!inputValue) {
+	const { mutateAsync, isPending: disabled } = useAddPaymentMethod({
+		onMutate: variables => {
+			if (!variables.image) {
 				throw new Error("No se ha seleccionado una imagen del metodo de pago");
 			}
-
-			const url = await API.upload.getPresignedUrl({
-				key: inputValue.name,
-			});
-
-			await API.upload.uploadFile({
-				file: inputValue,
-				url: url.data,
-			});
-
-			const { objectUrl } = getBucketObjectInfo({
-				key: inputValue.name,
-				buckerName: env.NEXT_PUBLIC_S3_BUCKET_NAME,
-			});
-
-			return mockActionResponseFromAPI(createPaymentMethodAction)({
-				type,
-				image: objectUrl,
-				userId,
-			});
 		},
 		onSuccess: () => {
 			clearInput();
-			router.refresh();
 			setOpen(false);
 		},
 	});
@@ -132,7 +105,13 @@ export function AddPaymentMethodModal({
 					<Button
 						type='submit'
 						disabled={disabled}
-						onClick={() => mutateAsync()}
+						onClick={() =>
+							mutateAsync({
+								type,
+								userId,
+								image: inputValue,
+							})
+						}
 					>
 						{disabled ? "Guardando..." : "Guardar"}
 					</Button>

@@ -1,10 +1,8 @@
 "use client";
 import type { PaymentMethod } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
 
-import { updatePaymentMethodAction } from "@/actions/payment-methods";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -14,11 +12,9 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { API, mockActionResponseFromAPI } from "@/core/api";
-import { env } from "@/env.mjs";
+import { useUpdatePaymentMethod } from "@/core/queries/payment-methods";
 import { useActionModal } from "@/hooks/use-action-modal";
 import { useInputFile } from "@/hooks/use-input-file";
-import { getBucketObjectInfo } from "@/lib/utils";
 
 export function UpdatePaymentMethodModal({
 	type,
@@ -43,30 +39,11 @@ export function UpdatePaymentMethodModal({
 		inputId: INPUT_ID,
 	});
 
-	const { mutateAsync, isPending: disabled } = useMutation({
-		mutationFn: async () => {
-			if (!inputValue) {
+	const { mutateAsync, isPending: disabled } = useUpdatePaymentMethod({
+		onMutate: variables => {
+			if (!variables.image) {
 				throw new Error("No se ha seleccionado una imagen del metodo de pago");
 			}
-
-			const url = await API.upload.getPresignedUrl({
-				key: inputValue.name,
-			});
-
-			await API.upload.uploadFile({
-				file: inputValue,
-				url: url.data,
-			});
-
-			const { objectUrl } = getBucketObjectInfo({
-				key: inputValue.name,
-				buckerName: env.NEXT_PUBLIC_S3_BUCKET_NAME,
-			});
-
-			return mockActionResponseFromAPI(updatePaymentMethodAction)({
-				image: objectUrl,
-				id,
-			});
 		},
 		onSuccess: () => {
 			clearInput();
@@ -129,7 +106,12 @@ export function UpdatePaymentMethodModal({
 					<Button
 						type='submit'
 						disabled={disabled}
-						onClick={() => mutateAsync()}
+						onClick={() =>
+							mutateAsync({
+								id,
+								image: inputValue,
+							})
+						}
 					>
 						{disabled ? "Guardando..." : "Guardar"}
 					</Button>
