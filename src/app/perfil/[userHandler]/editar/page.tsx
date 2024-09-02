@@ -1,8 +1,15 @@
+import { EditIcon, LockIcon, LockOpenIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
+import { Card, CardHeader } from "@/app/components/card";
+import { ModalActionButton } from "@/app/components/modal-action-link";
+import { ACTION_ROUTES } from "@/core/actions-routes";
+import { paymentMethodIconMap, paymentMethodNameMap } from "@/core/constants";
+import { getPaymentMethodsShift } from "@/lib/utils";
 import { db } from "@/server/db";
+import { AddPaymentMethodModal } from "./add-payment-method-modal";
 import { EditDescription } from "./edit-description";
 import { StoreProducts } from "./store-products";
 
@@ -25,14 +32,19 @@ export default async function CreatorProfile({ params }: Context) {
 					status: true,
 				},
 			},
+			paymentMethods: true,
 		},
 	});
 
-	if (!user) return notFound();
+	if (!user) return redirect("/");
+
+	const leftPaymentMethods = getPaymentMethodsShift(
+		user.paymentMethods.map(pm => pm.type),
+	);
 
 	return (
 		<>
-			<section className='relative pb-16 md:pb-24 lg:mt-24 '>
+			<section className='relative pb-16 md:pb-24 lg:mt-24'>
 				<div className='container-fluid lg:container '>
 					<div className='profile-banner group relative overflow-hidden text-transparent shadow dark:shadow-gray-700 lg:rounded-xl'>
 						<input
@@ -109,16 +121,95 @@ export default async function CreatorProfile({ params }: Context) {
 						</div>
 					</div>
 				</div>
-				<StoreProducts
-					products={user.products.map(p => ({
-						id: p.id,
-						title: p.name,
-						subtext: p.description ?? "",
-						priceInCents: p.costInCents,
-						image: p.image ?? "/images/items/beef.jpg",
-						avatar: "/images/avatar/1.jpg",
-					}))}
-				/>
+				<div>
+					<div className='container'>
+						<h5 className='mb-2 text-xl font-bold'>Productos</h5>
+					</div>
+					<StoreProducts
+						products={user.products.map(p => ({
+							id: p.id,
+							title: p.name,
+							subtext: p.description ?? "",
+							priceInCents: p.costInCents,
+							image: p.image ?? "/images/items/beef.jpg",
+							avatar: "/images/avatar/1.jpg",
+						}))}
+					/>
+				</div>
+				<div className='container'>
+					<h5 className='mb-2 text-xl font-bold'>Metodos de pago</h5>
+					<div className='mb-4'>
+						<h6 className='mb-2 text-lg'>Metodos de pago configurados</h6>
+						<div className='flex gap-2'>
+							{user.paymentMethods.length ? (
+								user.paymentMethods.map(method => (
+									<Card key={method.id}>
+										<CardHeader>
+											<div className='flex items-center gap-2'>
+												{paymentMethodIconMap[method.type]}
+												<span>{paymentMethodNameMap[method.type]}</span>
+												<div className='ml-2 flex items-center gap-1'>
+													{method.type !== "EFECTIVO" && (
+														<ModalActionButton
+															size='sm-icon'
+															action={ACTION_ROUTES.paymentMethods.update(
+																method.id,
+															)}
+															title='Editar'
+														>
+															<EditIcon className='h-4 w-4' />
+														</ModalActionButton>
+													)}
+													<ModalActionButton
+														size='sm-icon'
+														variant='destructive'
+														action={ACTION_ROUTES.paymentMethods.toggleStatus(
+															method.id,
+														)}
+														title={method.status ? "Desactivar" : "Activar"}
+													>
+														{method.status ? (
+															<LockIcon className='h-4 w-4' />
+														) : (
+															<LockOpenIcon className='h-4 w-4' />
+														)}
+													</ModalActionButton>
+												</div>
+											</div>
+										</CardHeader>
+									</Card>
+								))
+							) : (
+								<div>No hay metodos de pago configurados</div>
+							)}
+						</div>
+					</div>
+					<div>
+						<h6 className='mb-2 text-lg'>Metodos de pago sin configurar</h6>
+						<div className='flex gap-2'>
+							{leftPaymentMethods.length ? (
+								leftPaymentMethods.map(method => (
+									<AddPaymentMethodModal
+										key={method}
+										type={method}
+										userId={user.id}
+									>
+										<Card role='button'>
+											<CardHeader>
+												<div className='flex items-center gap-2'>
+													{paymentMethodIconMap[method]}
+													<span>{paymentMethodNameMap[method]}</span>
+												</div>
+											</CardHeader>
+										</Card>
+									</AddPaymentMethodModal>
+								))
+							) : (
+								<div>Todos los metodos de pago están configurados</div>
+							)}
+						</div>
+					</div>
+				</div>
 			</section>
 		</>
 	);

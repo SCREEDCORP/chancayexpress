@@ -1,4 +1,5 @@
 "use client";
+import type { PaymentMethod } from "@prisma/client";
 import React from "react";
 
 type ProductContextValue = {
@@ -6,6 +7,7 @@ type ProductContextValue = {
 	setAddress: (address: string) => void;
 	paymentMethodId: number | undefined;
 	setPaymentMethodId: (paymentMethodId: number) => void;
+	selectedPaymentMethodType: PaymentMethod["type"] | undefined;
 	phone: string;
 	setPhone: (phone: string) => void;
 };
@@ -15,12 +17,16 @@ const ProductContext = React.createContext<ProductContextValue | null>(null);
 export function ProductProvider({
 	children,
 	validPaymentMethods,
-}: React.PropsWithChildren<{ validPaymentMethods: number[] }>) {
+}: React.PropsWithChildren<{ validPaymentMethods: PaymentMethod[] }>) {
 	const [address, setAddress] = React.useState("");
 	const [paymentMethodId, setPaymentMethodId] = React.useState<
 		number | undefined
-	>(validPaymentMethods[0]);
+	>(validPaymentMethods[0]?.id);
 	const [phone, setPhone] = React.useState("");
+
+	const selectedPaymentMethodType = React.useMemo(() => {
+		return validPaymentMethods.find(pm => pm.id === paymentMethodId)?.type;
+	}, [paymentMethodId, validPaymentMethods]);
 
 	return (
 		<ProductContext.Provider
@@ -31,6 +37,7 @@ export function ProductProvider({
 				setPaymentMethodId,
 				phone,
 				setPhone,
+				selectedPaymentMethodType,
 			}}
 		>
 			{children}

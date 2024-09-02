@@ -1,24 +1,12 @@
 "use client";
-import { PaymentMethodType, type PaymentMethod } from "@prisma/client";
-import { CheckCircleIcon, DollarSignIcon } from "lucide-react";
+import { type PaymentMethod } from "@prisma/client";
+import { CheckCircleIcon } from "lucide-react";
 
 import { Card, CardContent, CardHeader } from "@/app/components/card";
-import { PlinIcon, YapeIcon } from "@/app/components/icons";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { paymentMethodIconMap, paymentMethodNameMap } from "@/core/constants";
 import { useProductContext } from "./context";
-
-const paymentMethodIconMap: Record<PaymentMethodType, React.ReactNode> = {
-	[PaymentMethodType.EFECTIVO]: <DollarSignIcon className='h-8 w-8' />,
-	[PaymentMethodType.PLIN]: <PlinIcon className='h-8 w-8' />,
-	[PaymentMethodType.YAPE]: <YapeIcon className='h-8 w-8' />,
-};
-
-const paymentMethodNameMap: Record<PaymentMethodType, string> = {
-	[PaymentMethodType.EFECTIVO]: "Efectivo",
-	[PaymentMethodType.PLIN]: "Plin",
-	[PaymentMethodType.YAPE]: "Yape",
-};
 
 export function PaymentMethodCard({ methods }: { methods: PaymentMethod[] }) {
 	const { paymentMethodId, setPaymentMethodId } = useProductContext();

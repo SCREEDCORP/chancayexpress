@@ -72,6 +72,14 @@ async function createUser(req: NextRequest) {
 				data: {
 					...data,
 					nameHandler: data.nameHandler?.toLowerCase(),
+					paymentMethods:
+						data.type === "STORE"
+							? {
+									create: {
+										type: "EFECTIVO",
+									},
+								}
+							: undefined,
 				},
 			});
 

@@ -21,7 +21,11 @@ export default async function BuyProductPage({
 		include: {
 			user: {
 				include: {
-					paymentMethods: true,
+					paymentMethods: {
+						where: {
+							status: true,
+						},
+					},
 				},
 			},
 		},
@@ -33,9 +37,7 @@ export default async function BuyProductPage({
 		<>
 			{/* <Navbar /> */}
 			<div className='lg:pt-22 container relative overflow-hidden pt-[74px]'>
-				<ProductProvider
-					validPaymentMethods={product.user.paymentMethods.map(pm => pm.id)}
-				>
+				<ProductProvider validPaymentMethods={product.user.paymentMethods}>
 					<main className='grid gap-2 md:grid-cols-12'>
 						<section className='flex flex-col gap-2 md:col-span-7'>
 							<AddressCard />

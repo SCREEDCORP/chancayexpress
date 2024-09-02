@@ -1,7 +1,9 @@
+import type { PaymentMethodType } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import crypto from "crypto";
 import { twMerge } from "tailwind-merge";
 
+import { paymentMethodsTypes } from "@/core/constants";
 import type { GetBucketSignedUrlParams } from "./s3";
 
 export function cn(...inputs: ClassValue[]) {
@@ -31,4 +33,8 @@ export function getBucketObjectInfo({
 		key: finalKey,
 		objectUrl: `https://${buckerName}.s3.sa-east-1.amazonaws.com/${finalKey}`,
 	};
+}
+
+export function getPaymentMethodsShift(methodTypes: PaymentMethodType[]) {
+	return paymentMethodsTypes.filter(m => !methodTypes.includes(m));
 }

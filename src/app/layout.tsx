@@ -5,25 +5,31 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 const urbanist = Urbanist({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
-  variable: "--font-urbanist",
+	subsets: ["latin"],
+	weight: ["300", "400", "500", "600", "700", "800", "900"],
+	display: "swap",
+	variable: "--font-urbanist",
 });
 
 export const metadata = {
-  title: "Chancay Express",
-  description: "Delivery YA!",
+	title: "Chancay Express",
+	description: "Delivery YA!",
 };
 
-export default function RootLayout({ children }: React.PropsWithChildren) {
-  return (
-    <html lang="en" dir="LTR" className="dark">
-      <body
-        className={`${urbanist.variable} font-urbanist text-base text-black dark:bg-slate-900 dark:text-white dark`}
-      >
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
+export default function RootLayout({
+	children,
+	actions,
+}: React.PropsWithChildren<{ actions: React.ReactNode }>) {
+	return (
+		<html lang='en' dir='LTR' className='dark'>
+			<body
+				className={`${urbanist.variable} dark font-urbanist text-base text-black dark:bg-slate-900 dark:text-white`}
+			>
+				<Providers>
+					{children}
+					{actions}
+				</Providers>
+			</body>
+		</html>
+	);
 }

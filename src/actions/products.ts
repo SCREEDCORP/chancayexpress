@@ -33,7 +33,7 @@ export const buyProductAction = actionClient
 			productId: z.string(),
 		}),
 	)
-	.action(async ({ parsedInput: { productId, ...data } }) => {
+	.action(async ({ parsedInput: { productId, methodId, ...data } }) => {
 		const product = await db.product.findUnique({
 			where: {
 				id: productId,
@@ -57,11 +57,23 @@ export const buyProductAction = actionClient
 		if (!product.status)
 			throw new ActionError("El producto no esta disponible");
 
-		await db.$transaction(async tx => {
+		const paymentMethod = await db.paymentMethod.findUnique({
+			where: {
+				id: methodId,
+			},
+		});
+
+		if (!paymentMethod) throw new ActionError("El método de pago no existe");
+
+		if (!paymentMethod.status)
+			throw new ActionError("El método de pago está desactivado");
+
+		return db.$transaction(async tx => {
 			const newRequest = await tx.productRequest.create({
 				data: {
 					...data,
 					productId,
+					methodId,
 					status: ProductRequestStatus.PENDING_APPROVAL,
 					code: createCode(),
 					requestPriceInCents: product.costInCents * data.quantity,
@@ -84,5 +96,7 @@ export const buyProductAction = actionClient
 					whatsappMessageId: res.messages[0].id,
 				},
 			});
+
+			return newRequest.id;
 		});
 	});

@@ -17,6 +17,13 @@ export async function POST(req: NextRequest) {
 	}
 
 	const res = await sendTemplateMessage(recipient);
+	// const res = await sendWhatsappMessage({
+	// 	recipient,
+	// 	deliveryAddress: "Av. Juan XXIII, 1",
+	// 	productDescription: "Product description",
+	// 	paymentMethod: "EFECTIVO",
+	// 	totalPrice: 1000,
+	// });
 
 	console.log(JSON.stringify(res));
 
