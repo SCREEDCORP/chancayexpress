@@ -2,6 +2,11 @@ import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
 import { ROUTES } from "@/core/routes";
+import {
+	Paragraph,
+	ParagraphContent,
+	ParagraphTitle,
+} from "../components/paragraph";
 
 export default function Politicas() {
 	return (
@@ -244,16 +249,4 @@ export default function Politicas() {
 			</section>
 		</>
 	);
-}
-
-function Paragraph({ children }: React.PropsWithChildren) {
-	return <article className='space-y-2'>{children}</article>;
-}
-
-function ParagraphTitle({ children }: React.PropsWithChildren) {
-	return <h5 className='text-xl font-semibold'>{children}</h5>;
-}
-
-function ParagraphContent({ children }: React.PropsWithChildren) {
-	return <p className='text-slate-400'>{children}</p>;
 }

@@ -16,4 +16,7 @@ export const ROUTES = {
 	politicas: {
 		path: "/politicas",
 	},
+	terminosYCondiciones: {
+		path: "/terminos-y-condiciones",
+	},
 } as const;

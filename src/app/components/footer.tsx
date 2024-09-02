@@ -1,6 +1,8 @@
-import { ROUTES } from "@/core/routes";
+import { Mail, MapPinIcon, Phone } from "lucide-react";
 import Link from "next/link";
 import { MdKeyboardArrowRight } from "react-icons/md";
+
+import { ROUTES } from "@/core/routes";
 
 export default function Footer() {
 	return (
@@ -51,87 +53,45 @@ export default function Footer() {
 							</div> */}
 
 						<div className='grid grid-cols-1 gap-[30px] md:grid-cols-12'>
-							<div className='space-y-2 md:col-span-12 lg:col-span-6'>
-								{/* <Link
-									href={ROUTES.home}
-									className='block w-fit text-[22px] focus:outline-none'
-								>
-									<Image
-										src='/images/logo-white.png'
-										placeholder='blur'
-										blurDataURL='/images/logo-white.png'
-										alt='Chancay Express logo'
-										width={116}
-										height={116}
-									/>
-								</Link> */}
+							<div className='space-y-2 md:col-span-4 lg:col-span-3'>
+								<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
+									<Link href={ROUTES.home} className='hover:text-violet-600'>
+										Chancay Express
+									</Link>
+								</h5>
 								<p className='mt-4 text-gray-300'>
 									Compra, vende y descubre productos de negocios locales en
 									Chancay Express, la plataforma donde los comercios muestran
 									sus mejores ofertas para que encuentres justo lo que
 									necesitas.
 								</p>
-								<Link
-									href={ROUTES.politicas.path}
-									className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-								>
-									<MdKeyboardArrowRight className='me-1 text-lg' />
-									<span>Politicas</span>
-								</Link>
 							</div>
 
-							{/* <div className='md:col-span-4 lg:col-span-2'>
+							<div className='space-y-6 md:col-span-4 lg:col-span-3'>
 								<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
-									Giglink
+									Links
 								</h5>
-								<ul className='footer-list mt-6 list-none'>
+								<ul className='footer-list list-none space-y-2'>
 									<li>
 										<Link
-											href='/explore-one'
+											href={ROUTES.politicas.path}
 											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
 										>
 											<MdKeyboardArrowRight className='me-1 text-lg' />
-											<span>Explore Item</span>
+											<span>Politicas</span>
 										</Link>
 									</li>
-									<li className='mt-[10px]'>
+									<li>
 										<Link
-											href='/auction'
+											href={ROUTES.terminosYCondiciones.path}
 											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
 										>
-											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-											<span>Live Auction</span>{" "}
-										</Link>
-									</li>
-									<li className='mt-[10px]'>
-										<Link
-											href='/activity'
-											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-										>
-											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-											<span>Activities</span>{" "}
-										</Link>
-									</li>
-									<li className='mt-[10px]'>
-										<Link
-											href='/wallet'
-											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-										>
-											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-											<span>Wallets</span>
-										</Link>
-									</li>
-									<li className='mt-[10px]'>
-										<Link
-											href='/creators'
-											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-										>
-											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-											<span>Creators</span>
+											<MdKeyboardArrowRight className='me-1 text-lg' />
+											<span>Terminos y condiciones</span>
 										</Link>
 									</li>
 								</ul>
-							</div> */}
+							</div>
 
 							{/* <div className='md:col-span-4 lg:col-span-3'>
 								<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
@@ -195,68 +155,57 @@ export default function Footer() {
 								</ul>
 							</div> */}
 
-							{/* <div className='md:col-span-4 lg:col-span-3'>
+							<div className='space-y-6 md:col-span-4 lg:col-span-3'>
 								<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
-									Download the Giglink app
+									Contacto
 								</h5>
 
-								<ul className='mt-6 list-none'>
-									<li className='inline'>
-										<Image
-											src='/images/app.png'
-											className='inline-block h-9'
-											alt=''
-											width={120}
-											height={36}
-										/>
-									</li>
-									<li className='inline'>
-										<Image
-											src='/images/playstore.png'
-											className='inline-block h-9'
-											alt=''
-											width={120}
-											height={36}
-										/>
-									</li>
-								</ul>
+								<div className='space-y-2'>
+									<div className='flex'>
+										<div>
+											<MapPinIcon className='me-3 mt-1 h-5 w-5 text-violet-600' />
+										</div>
+										<div>
+											JAVIER PRADO ESTE NRO. 2965 INT. 504 URB. LAS DALIAS San
+											Borja.
+										</div>
+									</div>
 
-								<div className='mt-6'>
-									<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
-										Contact Details
-									</h5>
-
-									<div className='mt-6 flex'>
-										<Mail className='me-3 mt-1 h-5 w-5 text-violet-600'></Mail>
-										<div className=''>
+									<div className='flex'>
+										<div>
+											<Mail className='me-3 mt-1 h-5 w-5 text-violet-600' />
+										</div>
+										<div>
 											<Link
-												href='mailto:contact@example.com'
+												href='mailto:team@chancayexpress.com'
 												className='text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
 											>
-												contact@example.com
+												team@chancayexpress.com
 											</Link>
 										</div>
 									</div>
 
-									<div className='mt-6 flex'>
-										<Phone className='me-3 mt-1 h-5 w-5 text-violet-600'></Phone>
-										<div className=''>
+									<div className='flex'>
+										<div>
+											<Phone className='me-3 mt-1 h-5 w-5 text-violet-600' />
+										</div>
+										<div>
 											<Link
-												href='tel:+152534-468-854'
+												href='tel:+51907548650'
 												className='text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
 											>
-												+152 534-468-854
+												+51 907 548 650
 											</Link>
 										</div>
 									</div>
 								</div>
-							</div> */}
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div className='border-t border-gray-800 px-0 py-[30px] dark:border-gray-700'>
+			<div className='border-t border-gray-800 px-0 py-4 dark:border-gray-700'>
 				<div className='container text-center'>
 					<div className='grid items-center gap-6 md:grid-cols-2'>
 						<div className='text-center md:text-start'>
