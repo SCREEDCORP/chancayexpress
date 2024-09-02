@@ -21,6 +21,11 @@ export async function POST(req: NextRequest) {
 	try {
 		const body = await req.json();
 
+		console.info(
+			"Recibido un evento de Whatsapp: ",
+			JSON.stringify(body, null, 2),
+		);
+
 		const desiredEvent = body as TemplateResponse;
 
 		const field = desiredEvent?.entry[0]?.changes[0]?.field;
