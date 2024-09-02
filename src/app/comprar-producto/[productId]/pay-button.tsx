@@ -55,9 +55,9 @@ export function PayButton({ productId }: { productId: string }) {
 			});
 		},
 		onSuccess: response => {
-			const newRequestId = response.data;
+			// const newRequestId = response.data;
 
-			router.push(ROUTES.validarPedido.detalle(newRequestId));
+			router.push(ROUTES.home);
 		},
 	});
 
