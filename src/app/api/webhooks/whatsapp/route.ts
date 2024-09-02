@@ -34,9 +34,9 @@ export async function POST(req: NextRequest) {
 			whatsappMessageId &&
 			message
 		) {
-			console.log(
+			console.info(
 				"Se ha recibido un evento deseado de Whatsapp: ",
-				desiredEvent,
+				JSON.stringify(desiredEvent, null, 2),
 			);
 
 			const request = await db.productRequest.findUnique({
@@ -56,7 +56,10 @@ export async function POST(req: NextRequest) {
 			});
 
 			if (request) {
-				console.log("El mensage de whatsapp es del pedido: ", request);
+				console.info(
+					"El mensage de whatsapp es del pedido: ",
+					JSON.stringify(request, null, 2),
+				);
 
 				if (request.status !== "PENDING_APPROVAL") {
 					console.error("El pedido ya ha sido respondido");
@@ -76,7 +79,7 @@ export async function POST(req: NextRequest) {
 						},
 					});
 					await sendClientRequestStatusMessage({
-						recipient: request.clientPhone,
+						recipient: "51" + request.clientPhone,
 						product: `${request.quantity} x ${request.product.name}`,
 						productRequestStatus: status,
 						store: request.product.user.name ?? "",
