@@ -15,6 +15,7 @@ export type ProductProps = {
 	onAction?: () => void;
 	action?: string;
 	actionLink?: string;
+	cardLink?: string;
 };
 
 export function ProductList({
@@ -47,7 +48,83 @@ export function ProductItem({
 	subtextLink,
 	titleLink,
 	actionLink,
+	cardLink,
 }: ProductProps) {
+	if (cardLink) {
+		return (
+			<Link href={cardLink} className='block'>
+				<div className='group relative h-fit overflow-hidden rounded-lg border border-gray-100 bg-white p-2 transition-all duration-500 hover:-mt-2 hover:shadow-md dark:border-gray-800 dark:bg-slate-900 dark:shadow-md hover:dark:shadow-gray-700'>
+					<div className='relative overflow-hidden'>
+						<div className='relative overflow-hidden rounded-lg'>
+							<Image
+								src={image ?? "/images/avatar/2.jpg"}
+								className='h-auto max-h-[130px] w-full rounded-lg object-cover shadow-md transition-all duration-500 group-hover:scale-110 dark:shadow-gray-700'
+								alt={`${title} image`}
+								width={0}
+								height={0}
+								sizes='100vw'
+								placeholder='blur'
+								blurDataURL={image ?? undefined}
+							/>
+						</div>
+
+						{actionLink ? (
+							<div className='absolute -bottom-20 end-0 start-0 mx-auto text-center transition-all duration-500 group-hover:bottom-1/2 group-hover:translate-y-1/2'>
+								<Button>
+									<span>
+										<i className='mdi mdi-lightning-bolt'></i> Comprar
+									</span>
+								</Button>
+							</div>
+						) : (
+							!!action && (
+								<div className='absolute -bottom-20 end-0 start-0 mx-auto text-center transition-all duration-500 group-hover:bottom-1/2 group-hover:translate-y-1/2'>
+									<Button onClick={onAction}>
+										<i className='mdi mdi-lightning-bolt'></i> {action}{" "}
+									</Button>
+								</div>
+							)
+						)}
+					</div>
+
+					<div className='mt-3'>
+						<div className='flex items-center'>
+							<span className='ms-2 text-[15px] font-medium text-slate-400 hover:text-violet-600'>
+								{subtext}
+							</span>
+						</div>
+
+						<div className='my-3;'>
+							<span className='font-semibold hover:text-violet-600'>
+								{title}
+							</span>
+						</div>
+
+						{price !== undefined && (
+							<div className='flex justify-between rounded-lg bg-gray-50 p-2 shadow dark:bg-slate-800 dark:shadow-gray-700'>
+								<div>
+									<span className='block text-[16px] font-medium'>
+										<i className='mdi '></i> {price}
+									</span>
+									<span className='block text-[16px] font-semibold'></span>
+								</div>
+
+								{/* <div>
+              <span className="text-[16px] font-medium text-slate-400 block">
+                Highest Bid
+              </span>
+              <span className="text-[16px] font-semibold block">
+                <i className="mdi mdi-ethereum"></i> 3.5 ETH
+              </span>
+            </div> */}
+							</div>
+						)}
+					</div>
+				</div>
+			</Link>
+		);
+	}
+
 	return (
 		<div className='group relative h-fit overflow-hidden rounded-lg border border-gray-100 bg-white p-2 transition-all duration-500 hover:-mt-2 hover:shadow-md dark:border-gray-800 dark:bg-slate-900 dark:shadow-md hover:dark:shadow-gray-700'>
 			<div className='relative overflow-hidden'>

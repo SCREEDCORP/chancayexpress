@@ -7,7 +7,7 @@ type ProductContextValue = {
 	setAddress: (address: string) => void;
 	paymentMethodId: number | undefined;
 	setPaymentMethodId: (paymentMethodId: number) => void;
-	selectedPaymentMethodType: PaymentMethod["type"] | undefined;
+	selectedPaymentMethod: PaymentMethod | undefined;
 	phone: string;
 	setPhone: (phone: string) => void;
 };
@@ -24,8 +24,8 @@ export function ProductProvider({
 	>(validPaymentMethods[0]?.id);
 	const [phone, setPhone] = React.useState("");
 
-	const selectedPaymentMethodType = React.useMemo(() => {
-		return validPaymentMethods.find(pm => pm.id === paymentMethodId)?.type;
+	const selectedPaymentMethod = React.useMemo(() => {
+		return validPaymentMethods.find(pm => pm.id === paymentMethodId);
 	}, [paymentMethodId, validPaymentMethods]);
 
 	return (
@@ -37,7 +37,7 @@ export function ProductProvider({
 				setPaymentMethodId,
 				phone,
 				setPhone,
-				selectedPaymentMethodType,
+				selectedPaymentMethod,
 			}}
 		>
 			{children}

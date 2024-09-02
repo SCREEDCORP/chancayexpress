@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 
+import { ROUTES } from "@/core/routes";
 import { db } from "@/server/db";
 import { ProductItem, ProductList } from "../components/product";
 
@@ -88,8 +89,9 @@ export default async function Page({
 							subtext={item.description ?? ""}
 							image={item.image}
 							avatar={item.image ?? "/images/avatar/4.jpg"}
-							titleLink={`/perfil/${item.nameHandler}`}
-							subtextLink={`/perfil/${item.nameHandler}`}
+							titleLink={ROUTES.perfil.detalle(item.nameHandler ?? "")}
+							subtextLink={ROUTES.perfil.detalle(item.nameHandler ?? "")}
+							cardLink={ROUTES.perfil.detalle(item.nameHandler ?? "")}
 						/>
 					))}
 				</ProductList>

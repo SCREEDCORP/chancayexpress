@@ -51,10 +51,6 @@ export default async function BuyProductPage({
 									/>
 									<h5 className='text-2xl font-bold'>{product.user.name}</h5>
 								</CardHeader>
-								<CardContent className='flex items-center justify-between'>
-									<span>Entrega estimada:</span>
-									<span>24 - 39 min</span>
-								</CardContent>
 							</Card>
 							<PaymentMethodCard methods={product.user.paymentMethods} />
 						</section>
@@ -64,10 +60,6 @@ export default async function BuyProductPage({
 									<h5 className='text-2xl font-bold'>Resumen</h5>
 								</CardHeader>
 								<CardContent>
-									<div className='flex items-center justify-between gap-2'>
-										<span>Entrega estimada:</span>
-										<span>24 - 39 min</span>
-									</div>
 									<div className='flex items-center justify-between gap-2'>
 										<span>Costo de productos:</span>
 										<span>{formatPrice(product.costInCents)}</span>

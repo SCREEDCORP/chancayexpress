@@ -1,5 +1,6 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -9,6 +10,7 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
+	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -22,7 +24,7 @@ export function PayButton({ productId }: { productId: string }) {
 	const router = useRouter();
 	const [open, setOpen] = React.useState(false);
 
-	const { address, phone, paymentMethodId, selectedPaymentMethodType } =
+	const { address, phone, paymentMethodId, selectedPaymentMethod } =
 		useProductContext();
 	const { mutateAsync, isPending } = useMutation({
 		mutationFn: () => {
@@ -59,7 +61,15 @@ export function PayButton({ productId }: { productId: string }) {
 		},
 	});
 
-	if (selectedPaymentMethodType === "EFECTIVO") {
+	if (!selectedPaymentMethod || !phone || !address) {
+		return (
+			<Button className='w-full' disabled={true}>
+				Hacer pedido
+			</Button>
+		);
+	}
+
+	if (selectedPaymentMethod?.type === "EFECTIVO") {
 		return (
 			<Button
 				className='w-full'
@@ -80,23 +90,41 @@ export function PayButton({ productId }: { productId: string }) {
 			}}
 		>
 			<DialogTrigger asChild>
-				<Button className='w-full' disabled={!paymentMethodId}>
+				<Button
+					className='w-full'
+					disabled={!paymentMethodId || isPending || !selectedPaymentMethod}
+				>
 					{isPending ? "Haciendo pedido..." : "Hacer pedido"}
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className='max-h-[80%] max-w-max overflow-y-auto sm:max-w-[425px] md:max-w-5xl'>
-				<DialogHeader>
-					<DialogTitle>Crear nuevo metodo de pago</DialogTitle>
+			<DialogContent size='lg'>
+				<DialogHeader className='text-left'>
+					<DialogTitle>Hacer pedido</DialogTitle>
+					<DialogDescription>
+						Para realizar el pedido mediante el metodo de pago:{" "}
+						{selectedPaymentMethod?.type}, debe realizar el pago para poder
+						proceder.
+					</DialogDescription>
 				</DialogHeader>
-
+				<div>
+					{selectedPaymentMethod.image ? (
+						<Image
+							src={selectedPaymentMethod.image}
+							alt=''
+							className='mx-auto'
+							width={300}
+							height={300}
+						/>
+					) : null}
+				</div>
 				<DialogFooter>
 					<Button
 						type='submit'
 						disabled={isPending}
 						onClick={() => mutateAsync()}
 					>
-						{isPending ? "Confirmando..." : "Confirmar pedido"}
+						{isPending ? "Confirmando..." : "Confirmar pago"}
 					</Button>
 					<DialogClose asChild>
 						<Button variant='destructive' type='button' disabled={isPending}>

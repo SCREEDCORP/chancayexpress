@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { createCode } from "@/lib/utils";
 import { db } from "@/server/db";
-import { sendWhatsappMessage } from "@/server/ws";
+import { sendStoreConfirmationMessage } from "@/server/ws";
 import type { ZodInferSchema } from "@/types";
 import { actionClient, ActionError } from ".";
 
@@ -66,7 +66,9 @@ export const buyProductAction = actionClient
 		if (!paymentMethod) throw new ActionError("El método de pago no existe");
 
 		if (!paymentMethod.status)
-			throw new ActionError("El método de pago está desactivado");
+			throw new ActionError(
+				"El método de pago ha sido desactivado por el negocio",
+			);
 
 		return db.$transaction(async tx => {
 			const newRequest = await tx.productRequest.create({
@@ -78,17 +80,35 @@ export const buyProductAction = actionClient
 					code: createCode(),
 					requestPriceInCents: product.costInCents * data.quantity,
 				},
-				select: { id: true, method: { select: { type: true } } },
+				select: {
+					id: true,
+					method: { select: { type: true } },
+					clientPhone: true,
+				},
 			});
 
 			// enviar al numero de whatsapp del negocio que ha recibido una compra
-			const res = await sendWhatsappMessage({
+			const res = await sendStoreConfirmationMessage({
 				recipient: "51" + userPhone,
-				productDescription: `${data.quantity} x ${product.name}`,
-				deliveryAddress: data.deliveryAddress,
-				totalPrice: product.costInCents * data.quantity,
+				product: `${data.quantity} x ${product.name}`,
+				address: data.deliveryAddress,
+				totalPriceInCents: product.costInCents * data.quantity,
 				paymentMethod: newRequest.method.type,
+				clientPhone: newRequest.clientPhone,
 			});
+
+			// enviar al numero de whatsapp del cliente que ha realizado el pedido
+			// const resClient = await sendStoreConfirmationMessage({
+			// 	recipient: "51" + newRequest.clientPhone,
+			// 	product: `${data.quantity} x ${product.name}`,
+			// 	address: data.deliveryAddress,
+			// 	totalPriceInCents: product.costInCents * data.quantity,
+			// 	paymentMethod: newRequest.method.type,
+			// 	clientPhone: newRequest.clientPhone,
+			// });
+
+			console.log(JSON.stringify(res, null, 2));
+			// console.log(JSON.stringify(resClient, null, 2));
 
 			await tx.productRequest.update({
 				where: { id: newRequest.id },

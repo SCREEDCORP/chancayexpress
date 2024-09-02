@@ -29,7 +29,7 @@ export default async function ValidarPedidoPage({
 	if (request.status === "PENDING_APPROVAL") {
 		return (
 			<ClientRevalidate>
-				<div className='fixed inset-0 z-50 bg-background/80'>
+				<div className='pointer-events-none fixed inset-0 z-50 overflow-hidden bg-background/80'>
 					<div className='grid h-full place-items-center gap-4'>
 						<div className='flex flex-col items-center justify-center gap-2'>
 							<div>
@@ -66,7 +66,7 @@ export default async function ValidarPedidoPage({
 
 	if (request.status === "REJECTED") {
 		return (
-			<div className='fixed inset-0 z-50 bg-background/80'>
+			<div className='fixed inset-0 z-50 overflow-hidden bg-background/80'>
 				<div className='grid h-full place-items-center gap-4'>
 					<div className='flex flex-col items-center justify-center gap-2'>
 						<h1 className='text-2xl font-bold'>
@@ -80,7 +80,7 @@ export default async function ValidarPedidoPage({
 	}
 
 	return (
-		<div className='fixed inset-0 z-50 bg-background/80'>
+		<div className='fixed inset-0 z-50 overflow-hidden bg-background/80'>
 			<div className='grid h-full place-items-center gap-4'>
 				<div className='flex flex-col items-center justify-center gap-2'>
 					<h1 className='text-2xl font-bold'>

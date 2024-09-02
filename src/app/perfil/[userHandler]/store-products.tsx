@@ -6,8 +6,9 @@ import {
 	ProductList,
 	type ProductProps,
 } from "@/app/components/product";
-import { BuyProductModal } from "./buy-product-modal";
+import { ROUTES } from "@/core/routes";
 import { formatPrice } from "@/lib/utils";
+import { BuyProductModal } from "./buy-product-modal";
 
 export function StoreProducts({
 	products,
@@ -26,7 +27,7 @@ export function StoreProducts({
 						key={index}
 						{...item}
 						price={formatPrice(item.priceInCents)}
-						actionLink={`/comprar-producto/${item.id}`}
+						cardLink={ROUTES.comprarProducto.detalle(item.id)}
 					/>
 				))}
 			</ProductList>

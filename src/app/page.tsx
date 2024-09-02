@@ -1,3 +1,4 @@
+import { ROUTES } from "@/core/routes";
 import { db } from "@/server/db";
 import { ProductItem, ProductList } from "./components/product";
 
@@ -9,15 +10,18 @@ export default async function Page() {
 	return (
 		<>
 			<span className='fixed start-1/2 top-1/2 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-gradient-to-tl from-red-600/20 to-violet-600/20 blur-[200px] ltr:-translate-x-1/2 rtl:translate-x-1/2 dark:from-red-600/40 dark:to-violet-600/40'></span>
-			{/* <section className='relative overflow-hidden pt-36 md:pt-48'>
+			{/* <section className='relative overflow-hidden pb-36 md:pb-48'>
 				<div className='container'>
 					<div className='mt-10 grid grid-cols-1 justify-center text-center'>
 						<div className='relative'>
-							<div className='relative '>
-								<h1 className='text-4xl font-bold leading-snug lg:text-6xl lg:leading-snug'>
-									Software basado en los datos de{" "}
+							<div className='relative'>
+								<h1
+									className='text-4xl font-bold leading-snug lg:text-6xl lg:leading-snug'
+									style={{ textWrap: "balance" }}
+								>
+									Explora, compra y conecta con{"\n "}
 									<span className='bg-gradient-to-l from-red-600 to-violet-600 bg-clip-text text-transparent'>
-										nuestros usuarios
+										lo mejor de los negocios locales.
 									</span>
 								</h1>
 
@@ -26,7 +30,7 @@ export default async function Page() {
 								<div className="overflow-hidden after:absolute after:bottom-[0] after:end-[15%] after:-z-1 after:h-10 after:w-10 after:animate-ping after:rounded-full after:bg-violet-600/20 after:content-[''] dark:after:bg-violet-600/40"></div>
 							</div>
 							<p className='mx-auto max-w-xl text-lg text-slate-400 dark:text-white/70'>
-								para iterar de una forma rapida y segura.
+								en Chancay Express.
 							</p>
 						</div>
 					</div>
@@ -39,9 +43,12 @@ export default async function Page() {
 			</section> */}
 
 			<section>
-				<br />
-				<br />
-				<br />
+				<div className='container grid grid-cols-1'>
+					<h3 className='mb-4 text-2xl font-semibold leading-snug md:text-3xl md:leading-snug'>
+						Locales disponibles
+					</h3>
+					{/* <p className='mx-auto max-w-xl text-slate-400'>{description}</p> */}
+				</div>
 				<ProductList>
 					{usuarios.map((item, index) => (
 						<ProductItem
@@ -51,8 +58,9 @@ export default async function Page() {
 							subtext={item.description ?? ""}
 							image={item.image}
 							avatar={item.image ?? "/images/avatar/4.jpg"}
-							titleLink={`/perfil/${item.nameHandler}`}
-							subtextLink={`/perfil/${item.nameHandler}`}
+							titleLink={ROUTES.perfil.detalle(item.nameHandler ?? "")}
+							subtextLink={ROUTES.perfil.detalle(item.nameHandler ?? "")}
+							cardLink={ROUTES.perfil.detalle(item.nameHandler ?? "")}
 						/>
 					))}
 				</ProductList>

@@ -1,26 +1,123 @@
-import type { PaymentMethodType } from "@prisma/client";
+import type { PaymentMethodType, ProductRequestStatus } from "@prisma/client";
 
 import { env } from "@/env.mjs";
 import { formatPrice } from "@/lib/utils";
 
 const endpoint = `https://graph.facebook.com/${env.CLOUD_API_VERSION}/${env.SENDER_NUMBER}/messages`;
 
-export async function sendTemplateMessage(recipient: string) {
+async function fetchWhatsappApi(body: object) {
 	const res = await fetch(endpoint, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${env.CLOUD_API_ACCESS_TOKEN}`,
 		},
-		body: JSON.stringify({
-			messaging_product: "whatsapp",
-			to: recipient,
-			type: "template",
-			template: { name: "negocio", language: { code: "es" } },
-		}),
+		body: JSON.stringify(body),
 	});
 
-	return res.json();
+	const responseBody = await res.json();
+
+	if (!res.ok) {
+		const casted = responseBody as ErrorMessageSent;
+
+		throw new Error(casted.error.message);
+	}
+
+	return responseBody as SuccessMessageSent;
+}
+
+export function sendTemplateMessage(recipient: string) {
+	return fetchWhatsappApi({
+		messaging_product: "whatsapp",
+		to: recipient,
+		type: "template",
+		template: { name: "negocio", language: { code: "es" } },
+	});
+}
+
+export function sendStoreConfirmationMessage({
+	recipient,
+	product,
+	address,
+	paymentMethod,
+	totalPriceInCents,
+	clientPhone,
+}: {
+	recipient: string;
+	product: string;
+	address: string;
+	paymentMethod: PaymentMethodType;
+	totalPriceInCents: number;
+	clientPhone: string;
+}) {
+	return fetchWhatsappApi({
+		messaging_product: "whatsapp",
+		to: recipient,
+		type: "template",
+		template: {
+			name: "negocio_confirmacion",
+			language: { code: "es" },
+			components: [
+				{
+					type: "body",
+					parameters: [
+						{ type: "text", text: product },
+						{ type: "text", text: address },
+						{ type: "text", text: paymentMethod },
+						{ type: "text", text: totalPriceInCents },
+						{ type: "text", text: clientPhone },
+					],
+				},
+			],
+		},
+	});
+}
+
+const productRequestStatusMap: Record<
+	Exclude<ProductRequestStatus, "IN_CHICKEN" | "TO_DELIVER">,
+	string
+> = {
+	PENDING_APPROVAL: "PENDIENTE DE APROBACION",
+	REJECTED: "RECHAZADO",
+	INACTIVE: "APROBADO",
+};
+
+export function sendClientRequestStatusMessage({
+	product,
+	productRequestStatus,
+	store,
+	recipient,
+}: {
+	recipient: string;
+	store: string;
+	product: string;
+	productRequestStatus: Exclude<
+		ProductRequestStatus,
+		"IN_CHICKEN" | "TO_DELIVER"
+	>;
+}) {
+	return fetchWhatsappApi({
+		messaging_product: "whatsapp",
+		to: recipient,
+		type: "template",
+		template: {
+			name: "cliente_actualizacion_pedido",
+			language: { code: "es" },
+			components: [
+				{
+					type: "body",
+					parameters: [
+						{ type: "text", text: store },
+						{
+							type: "text",
+							text: productRequestStatusMap[productRequestStatus],
+						},
+						{ type: "text", text: product },
+					],
+				},
+			],
+		},
+	});
 }
 
 export async function sendAffiliationMessage(recipient: string) {

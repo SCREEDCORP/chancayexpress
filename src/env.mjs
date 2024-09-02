@@ -18,6 +18,7 @@ export const env = createEnv({
 		CLOUD_API_VERSION: z.string(),
 		CLOUD_API_ACCESS_TOKEN: z.string(),
 		SENDER_NUMBER: z.number({ coerce: true }),
+		WHATSAPP_MESSAGES_WEBHOOK_TOKEN: z.string(),
 	},
 
 	/**
@@ -51,6 +52,8 @@ export const env = createEnv({
 		CLOUD_API_VERSION: process.env.CLOUD_API_VERSION,
 		CLOUD_API_ACCESS_TOKEN: process.env.CLOUD_API_ACCESS_TOKEN,
 		SENDER_NUMBER: process.env.SENDER_NUMBER,
+		WHATSAPP_MESSAGES_WEBHOOK_TOKEN:
+			process.env.WHATSAPP_MESSAGES_WEBHOOK_TOKEN,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

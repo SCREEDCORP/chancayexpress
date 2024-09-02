@@ -1,8 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
-
-import { ROUTES } from "@/core/routes";
-
 export default function Footer() {
 	return (
 		<footer
@@ -53,7 +48,7 @@ export default function Footer() {
 
 						<div className='grid grid-cols-1 gap-[30px] md:grid-cols-12'>
 							<div className='md:col-span-12 lg:col-span-6'>
-								<Link
+								{/* <Link
 									href={ROUTES.home}
 									className='block w-fit text-[22px] focus:outline-none'
 								>
@@ -65,10 +60,12 @@ export default function Footer() {
 										width={116}
 										height={116}
 									/>
-								</Link>
+								</Link> */}
 								<p className='mt-4 text-gray-300'>
-									Compra y descubre productos de los negocios locales de Chancay
-									en Chancay Express.
+									Compra, vende y descubre productos de negocios locales en
+									Chancay Express, la plataforma donde los comercios muestran
+									sus mejores ofertas para que encuentres justo lo que
+									necesitas.
 								</p>
 							</div>
 
