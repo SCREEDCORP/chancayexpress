@@ -49,8 +49,8 @@ export function DeletePaymentMethodModal({
 						{status ? "Desactivar" : "Activar"} metodo de pago
 					</DialogTitle>
 					<DialogDescription>
-						Estas seguro que quiere {status ? "desactivar" : "Activar"} el
-						metodo de pago: {type}
+						Esta seguro que desea {status ? "desactivar" : "activar"} el metodo
+						de pago: {type}
 					</DialogDescription>
 				</DialogHeader>
 

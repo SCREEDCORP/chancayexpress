@@ -25,7 +25,18 @@ export function AddressCard() {
 					placeholder='965557013'
 					className='border-primary'
 					value={phone}
-					onChange={e => setPhone(e.target.value)}
+					onChange={e => {
+						const num = e.target.value;
+
+						if (num.length >= 9) {
+							setPhone(num.slice(0, 9));
+						} else {
+							setPhone(num);
+						}
+					}}
+					type='number'
+					maxLength={9}
+					inputMode='numeric'
 				/>
 			</CardContent>
 		</Card>

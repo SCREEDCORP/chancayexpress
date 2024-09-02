@@ -1,3 +1,7 @@
+import { ROUTES } from "@/core/routes";
+import Link from "next/link";
+import { MdKeyboardArrowRight } from "react-icons/md";
+
 export default function Footer() {
 	return (
 		<footer
@@ -47,7 +51,7 @@ export default function Footer() {
 							</div> */}
 
 						<div className='grid grid-cols-1 gap-[30px] md:grid-cols-12'>
-							<div className='md:col-span-12 lg:col-span-6'>
+							<div className='space-y-2 md:col-span-12 lg:col-span-6'>
 								{/* <Link
 									href={ROUTES.home}
 									className='block w-fit text-[22px] focus:outline-none'
@@ -67,6 +71,13 @@ export default function Footer() {
 									sus mejores ofertas para que encuentres justo lo que
 									necesitas.
 								</p>
+								<Link
+									href={ROUTES.politicas.path}
+									className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+								>
+									<MdKeyboardArrowRight className='me-1 text-lg' />
+									<span>Politicas</span>
+								</Link>
 							</div>
 
 							{/* <div className='md:col-span-4 lg:col-span-2'>
@@ -250,7 +261,8 @@ export default function Footer() {
 					<div className='grid items-center gap-6 md:grid-cols-2'>
 						<div className='text-center md:text-start'>
 							<p className='mb-0 text-gray-300'>
-								© {new Date().getFullYear()} Chancay Express.
+								© {new Date().getFullYear()} Chancay Express by{" "}
+								<Link href='https://www.lainds.com/'>LainDS</Link>.
 							</p>
 						</div>
 

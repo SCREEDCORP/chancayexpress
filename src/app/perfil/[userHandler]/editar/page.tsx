@@ -164,7 +164,7 @@ export default async function CreatorProfile({ params }: Context) {
 													)}
 													<ModalActionButton
 														size='sm-icon'
-														variant='destructive'
+														variant={method.status ? "destructive" : "success"}
 														action={ACTION_ROUTES.paymentMethods.toggleStatus(
 															method.id,
 														)}

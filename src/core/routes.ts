@@ -13,4 +13,7 @@ export const ROUTES = {
 		detalle: (productId: string) =>
 			`${ROUTES.comprarProducto.path}/${productId}`,
 	},
+	politicas: {
+		path: "/politicas",
+	},
 } as const;

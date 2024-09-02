@@ -22,9 +22,9 @@ export default function RootLayout({
 	actions,
 }: React.PropsWithChildren<{ actions: React.ReactNode }>) {
 	return (
-		<html lang='en' dir='LTR' className='dark'>
+		<html lang='en' dir='LTR' className=''>
 			<body
-				className={`${urbanist.variable} dark font-urbanist text-base text-black dark:bg-slate-900 dark:text-white`}
+				className={`${urbanist.variable} font-urbanist text-base text-black dark:bg-slate-900 dark:text-white`}
 			>
 				<Providers>
 					<main className='flex min-h-screen flex-col'>
