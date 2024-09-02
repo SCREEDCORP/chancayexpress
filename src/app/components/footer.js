@@ -1,27 +1,18 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone } from "react-feather";
-import {
-	AiOutlineInstagram,
-	AiOutlineShoppingCart,
-	AiOutlineTwitter,
-} from "react-icons/ai";
-import { BiLogoBehance } from "react-icons/bi";
-import { BsPencil } from "react-icons/bs";
-import { FaLinkedin, FaRegEnvelope } from "react-icons/fa";
-import { FiDribbble } from "react-icons/fi";
-import { LiaFacebookF } from "react-icons/lia";
-import { MdKeyboardArrowRight } from "react-icons/md";
+
+import { ROUTES } from "@/core/routes";
 
 export default function Footer() {
 	return (
-		<footer className='footer relative mt-24 bg-dark-footer text-gray-200 dark:text-gray-200'>
+		<footer
+			className='footer relative bg-dark-footer text-gray-200 dark:text-gray-200'
+			style={{ marginTop: "auto" }}
+		>
 			<div className='container'>
 				<div className='grid grid-cols-1'>
-					<div className='relative py-16'>
-						<div className='relative w-full'>
-							{/* <div className='relative -top-40 overflow-hidden rounded-xl bg-white px-6 py-10 shadow dark:bg-slate-900 dark:shadow-gray-800 lg:px-8'>
+					<div className='relative py-8'>
+						{/* <div className='relative -top-40 overflow-hidden rounded-xl bg-white px-6 py-10 shadow dark:bg-slate-900 dark:shadow-gray-800 lg:px-8'>
 								<div className='grid grid-cols-1 items-center gap-[30px] md:grid-cols-2'>
 									<div className='z-1 text-center md:text-start'>
 										<h3 className='text-[26px] font-semibold text-slate-900 dark:text-white'>
@@ -60,196 +51,198 @@ export default function Footer() {
 								</div>
 							</div> */}
 
-							<div className='-mt-24 grid grid-cols-1 gap-[30px] md:grid-cols-12'>
-								<div className='md:col-span-12 lg:col-span-4'>
-									<Link href='#' className='text-[22px] focus:outline-none'>
+						<div className='grid grid-cols-1 gap-[30px] md:grid-cols-12'>
+							<div className='md:col-span-12 lg:col-span-6'>
+								<Link
+									href={ROUTES.home}
+									className='block w-fit text-[22px] focus:outline-none'
+								>
+									<Image
+										src='/images/logo-white.png'
+										placeholder='blur'
+										blurDataURL='/images/logo-white.png'
+										alt='Chancay Express logo'
+										width={116}
+										height={116}
+									/>
+								</Link>
+								<p className='mt-4 text-gray-300'>
+									Compra y descubre productos de los negocios locales de Chancay
+									en Chancay Express.
+								</p>
+							</div>
+
+							{/* <div className='md:col-span-4 lg:col-span-2'>
+								<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
+									Giglink
+								</h5>
+								<ul className='footer-list mt-6 list-none'>
+									<li>
+										<Link
+											href='/explore-one'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />
+											<span>Explore Item</span>
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/auction'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Live Auction</span>{" "}
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/activity'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Activities</span>{" "}
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/wallet'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Wallets</span>
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/creators'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Creators</span>
+										</Link>
+									</li>
+								</ul>
+							</div> */}
+
+							{/* <div className='md:col-span-4 lg:col-span-3'>
+								<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
+									Usefull Links
+								</h5>
+								<ul className='footer-list mt-6 list-none'>
+									<li>
+										<Link
+											href='/aboutus'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>About Us</span>
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/blogs'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Blog & News</span>{" "}
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/terms'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Terms & Condition</span>{" "}
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/privacy'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Privacy policy</span>{" "}
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/login'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Login</span>{" "}
+										</Link>
+									</li>
+									<li className='mt-[10px]'>
+										<Link
+											href='/contact'
+											className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+										>
+											<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
+											<span>Contact Us</span>{" "}
+										</Link>
+									</li>
+								</ul>
+							</div> */}
+
+							{/* <div className='md:col-span-4 lg:col-span-3'>
+								<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
+									Download the Giglink app
+								</h5>
+
+								<ul className='mt-6 list-none'>
+									<li className='inline'>
 										<Image
-											src='/images/logo-white.png'
-											placeholder='blur'
-											blurDataURL='/images/logo-white.png'
+											src='/images/app.png'
+											className='inline-block h-9'
 											alt=''
-											width={116}
-											height={116}
+											width={120}
+											height={36}
 										/>
-									</Link>
-									<p className='mt-6 text-gray-300'>
-										Buy, sell and discover exclusive digital assets by the top
-										artists of NFTs world.
-									</p>
-								</div>
+									</li>
+									<li className='inline'>
+										<Image
+											src='/images/playstore.png'
+											className='inline-block h-9'
+											alt=''
+											width={120}
+											height={36}
+										/>
+									</li>
+								</ul>
 
-								<div className='md:col-span-4 lg:col-span-2'>
+								<div className='mt-6'>
 									<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
-										Giglink
-									</h5>
-									<ul className='footer-list mt-6 list-none'>
-										<li>
-											<Link
-												href='/explore-one'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />
-												<span>Explore Item</span>
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/auction'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Live Auction</span>{" "}
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/activity'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Activities</span>{" "}
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/wallet'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Wallets</span>
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/creators'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Creators</span>
-											</Link>
-										</li>
-									</ul>
-								</div>
-
-								<div className='md:col-span-4 lg:col-span-3'>
-									<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
-										Usefull Links
-									</h5>
-									<ul className='footer-list mt-6 list-none'>
-										<li>
-											<Link
-												href='/aboutus'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>About Us</span>
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/blogs'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Blog & News</span>{" "}
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/terms'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Terms & Condition</span>{" "}
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/privacy'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Privacy policy</span>{" "}
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/login'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Login</span>{" "}
-											</Link>
-										</li>
-										<li className='mt-[10px]'>
-											<Link
-												href='/contact'
-												className='inline-flex items-center text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-											>
-												<MdKeyboardArrowRight className='me-1 text-lg' />{" "}
-												<span>Contact Us</span>{" "}
-											</Link>
-										</li>
-									</ul>
-								</div>
-
-								<div className='md:col-span-4 lg:col-span-3'>
-									<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
-										Download the Giglink app
+										Contact Details
 									</h5>
 
-									<ul className='mt-6 list-none'>
-										<li className='inline'>
-											<Image
-												src='/images/app.png'
-												className='inline-block h-9'
-												alt=''
-												width={120}
-												height={36}
-											/>
-										</li>
-										<li className='inline'>
-											<Image
-												src='/images/playstore.png'
-												className='inline-block h-9'
-												alt=''
-												width={120}
-												height={36}
-											/>
-										</li>
-									</ul>
-
-									<div className='mt-6'>
-										<h5 className='text-lg font-semibold tracking-[1px] text-gray-100'>
-											Contact Details
-										</h5>
-
-										<div className='mt-6 flex'>
-											<Mail className='me-3 mt-1 h-5 w-5 text-violet-600'></Mail>
-											<div className=''>
-												<Link
-													href='mailto:contact@example.com'
-													className='text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-												>
-													contact@example.com
-												</Link>
-											</div>
+									<div className='mt-6 flex'>
+										<Mail className='me-3 mt-1 h-5 w-5 text-violet-600'></Mail>
+										<div className=''>
+											<Link
+												href='mailto:contact@example.com'
+												className='text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+											>
+												contact@example.com
+											</Link>
 										</div>
+									</div>
 
-										<div className='mt-6 flex'>
-											<Phone className='me-3 mt-1 h-5 w-5 text-violet-600'></Phone>
-											<div className=''>
-												<Link
-													href='tel:+152534-468-854'
-													className='text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
-												>
-													+152 534-468-854
-												</Link>
-											</div>
+									<div className='mt-6 flex'>
+										<Phone className='me-3 mt-1 h-5 w-5 text-violet-600'></Phone>
+										<div className=''>
+											<Link
+												href='tel:+152534-468-854'
+												className='text-[16px] text-gray-300 duration-500 ease-in-out hover:text-gray-400'
+											>
+												+152 534-468-854
+											</Link>
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>
@@ -260,20 +253,11 @@ export default function Footer() {
 					<div className='grid items-center gap-6 md:grid-cols-2'>
 						<div className='text-center md:text-start'>
 							<p className='mb-0 text-gray-300'>
-								© {new Date().getFullYear()} Giglink. Design & Develop with{" "}
-								<i className='mdi mdi-heart text-red-600'></i> by{" "}
-								<Link
-									href='https://shreethemes.in/'
-									target='_blank'
-									className='text-reset'
-								>
-									Shreethemes
-								</Link>
-								.
+								© {new Date().getFullYear()} Chancay Express.
 							</p>
 						</div>
 
-						<ul className='list-none space-x-1 text-center md:text-end'>
+						{/* <ul className='list-none space-x-1 text-center md:text-end'>
 							<li className='inline'>
 								<Link
 									href='https://1.envato.market/giglink-next'
@@ -345,7 +329,7 @@ export default function Footer() {
 									<FaRegEnvelope className='align-middle' />
 								</Link>
 							</li>
-						</ul>
+						</ul> */}
 					</div>
 				</div>
 			</div>

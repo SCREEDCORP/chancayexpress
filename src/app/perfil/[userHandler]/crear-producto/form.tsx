@@ -2,9 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Product } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -117,7 +115,7 @@ export function CreateProduct({ userId }: { userId: string }) {
 		<>
 			{/* <NavbarLight /> */}
 
-			<div className='relative mt-7'>
+			<div className='relative'>
 				<div className='shape absolute -bottom-[2px] end-0 start-0 z-1 overflow-hidden text-white dark:text-slate-900 sm:-bottom-px'>
 					<svg
 						className='h-auto w-full'
@@ -132,7 +130,7 @@ export function CreateProduct({ userId }: { userId: string }) {
 					</svg>
 				</div>
 			</div>
-			<section className='relative py-16 md:py-24'>
+			<section className='relative'>
 				<div className='container'>
 					<div className='grid gap-[30px] md:grid-cols-12'>
 						<div className='md:col-span-4 lg:col-span-3'>

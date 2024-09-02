@@ -1,259 +1,55 @@
-"use client"; // This is a client component 👈🏽
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export default function Navbar() {
-	const [isDropdown, openDropdown] = useState(true);
-	const [isOpen, setMenu] = useState(true);
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ROUTES } from "@/core/routes";
+import { SearchIcon } from "lucide-react";
+import {
+	NavbarClientProvider,
+	NavbarMenuExtras,
+	NavbarNavigation,
+} from "./navbar.client";
 
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			window.addEventListener("scroll", windowScroll);
-		}
-		window.scrollTo(0, 0);
-		activateMenu();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	function windowScroll() {
-		const navbar = document.getElementById("topnav");
-		if (
-			document.body.scrollTop >= 50 ||
-			document.documentElement.scrollTop >= 50
-		) {
-			if (navbar !== null) {
-				navbar?.classList.add("nav-sticky");
-			}
-		} else {
-			if (navbar !== null) {
-				navbar?.classList.remove("nav-sticky");
-			}
-		}
-
-		// const mybutton = document.getElementById("back-to-top");
-		// if (mybutton != null) {
-		//     if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-		//         mybutton.classList.add("flex");
-		//         mybutton.classList.remove("hidden");
-		//     } else {
-		//         mybutton.classList.add("hidden");
-		//         mybutton.classList.remove("flex");
-		//     }
-		// }
-	}
-
-	const toggleMenu = () => {
-		setMenu(!isOpen);
-		if (document.getElementById("navigation")) {
-			const anchorArray = Array.from(
-				document.getElementById("navigation").getElementsByTagName("a"),
-			);
-			anchorArray.forEach(element => {
-				element.addEventListener("click", elem => {
-					const target = elem.target.getAttribute("href");
-					if (target !== "") {
-						if (elem.target.nextElementSibling) {
-							var submenu = elem.target.nextElementSibling.nextElementSibling;
-							submenu.classList.toggle("open");
-						}
-					}
-				});
-			});
-		}
-	};
-
-	const getClosest = (elem, selector) => {
-		// Element.matches() polyfill
-		if (!Element.prototype.matches) {
-			Element.prototype.matches =
-				Element.prototype.matchesSelector ||
-				Element.prototype.mozMatchesSelector ||
-				Element.prototype.msMatchesSelector ||
-				Element.prototype.oMatchesSelector ||
-				Element.prototype.webkitMatchesSelector ||
-				function (s) {
-					var matches = (this.document || this.ownerDocument).querySelectorAll(
-							s,
-						),
-						i = matches.length;
-					while (--i >= 0 && matches.item(i) !== this) {}
-					return i > -1;
-				};
-		}
-
-		// Get the closest matching element
-		for (; elem && elem !== document; elem = elem.parentNode) {
-			if (elem.matches(selector)) return elem;
-		}
-		return null;
-	};
-	const activateMenu = () => {
-		var menuItems = document.getElementsByClassName("sub-menu-item");
-		if (menuItems) {
-			var matchingMenuItem = null;
-			for (var idx = 0; idx < menuItems.length; idx++) {
-				if (menuItems[idx].href === window.location.href) {
-					matchingMenuItem = menuItems[idx];
-				}
-			}
-
-			if (matchingMenuItem) {
-				matchingMenuItem.classList.add("active");
-
-				var immediateParent = getClosest(matchingMenuItem, "li");
-
-				if (immediateParent) {
-					immediateParent.classList.add("active");
-				}
-
-				var parent = getClosest(immediateParent, ".child-menu-item");
-				if (parent) {
-					parent.classList.add("active");
-				}
-
-				var parent = getClosest(parent || immediateParent, ".parent-menu-item");
-
-				if (parent) {
-					parent.classList.add("active");
-
-					var parentMenuitem = parent.querySelector(".menu-item");
-					if (parentMenuitem) {
-						parentMenuitem.classList.add("active");
-					}
-
-					var parentOfParent = getClosest(parent, ".parent-parent-menu-item");
-					if (parentOfParent) {
-						parentOfParent.classList.add("active");
-					}
-				} else {
-					var parentOfParent = getClosest(
-						matchingMenuItem,
-						".parent-parent-menu-item",
-					);
-					if (parentOfParent) {
-						parentOfParent.classList.add("active");
-					}
-				}
-			}
-		}
-	};
-
-	const metamask = async () => {
-		try {
-			//Basic Actions Section
-			const onboardButton = document.getElementById("connectWallet");
-
-			//   metamask modal
-			const modal = document.getElementById("modal-metamask");
-			const closeModalBtn = document.getElementById("close-modal");
-
-			//   wallet address
-			const myPublicAddress = document.getElementById("myPublicAddress");
-
-			//Created check function to see if the MetaMask extension is installed
-			const isMetaMaskInstalled = () => {
-				//Have to check the ethereum binding on the window object to see if it's installed
-				const { ethereum } = window;
-				return Boolean(ethereum && ethereum.isMetaMask);
-			};
-
-			const onClickConnect = async () => {
-				if (!isMetaMaskInstalled()) {
-					//meta mask not installed
-					modal.classList.add("show");
-					modal.style.display = "block";
-					return;
-				}
-				try {
-					// eslint-disable-next-line no-undef
-					await ethereum.request({ method: "eth_requestAccounts" });
-					// eslint-disable-next-line no-undef
-					const accounts = await ethereum.request({ method: "eth_accounts" });
-					myPublicAddress.innerHTML =
-						accounts[0].split("").slice(0, 6).join("") +
-						"..." +
-						accounts[0]
-							.split("")
-							.slice(accounts[0].length - 7, accounts[0].length)
-							.join("");
-				} catch (error) {
-					console.error(error);
-				}
-			};
-
-			const closeModal = () => {
-				modal.classList.remove("show");
-				modal.style.display = "none";
-			};
-
-			if (isMetaMaskInstalled()) {
-				// eslint-disable-next-line no-undef
-				const accounts = await ethereum.request({ method: "eth_accounts" });
-				if (!!accounts[0]) {
-					myPublicAddress.innerHTML =
-						accounts[0].split("").slice(0, 6).join("") +
-						"..." +
-						accounts[0]
-							.split("")
-							.slice(accounts[0].length - 7, accounts[0].length)
-							.join("");
-				}
-			}
-
-			onboardButton.addEventListener("click", onClickConnect);
-			closeModalBtn.addEventListener("click", closeModal);
-		} catch (error) {}
-	};
-
+export default function Navbar({
+	fullTextSearch,
+}: {
+	fullTextSearch?: string;
+}) {
 	return (
-		<>
+		<NavbarClientProvider>
 			<nav id='topnav' className='defaultscroll is-sticky'>
-				<div className='container'>
+				<div className='container flex items-center gap-2'>
 					{/* <!-- Logo container--> */}
-					<Link className='logo ps-0' href='/'>
+					<Link
+						className='logo !float-none ps-0'
+						href={ROUTES.home}
+						title='Inicio'
+					>
 						<Image
-							src='/images/logo-icon-28.png'
-							width={28}
-							height={28}
+							src='/images/logo-white.png'
+							width={70}
+							height={70}
 							className='inline-block sm:hidden'
-							alt=''
+							alt='Chancay Express logo'
 						/>
 						<div className='hidden sm:block'>
 							<Image
 								src='/images/logo-dark.png'
-								width={116}
-								height={28}
-								className='inline-block h-7 dark:hidden'
-								alt=''
+								width={70}
+								height={70}
+								className='inline-block dark:hidden'
+								alt='Chancay Express logo'
 							/>
 							<Image
 								src='/images/logo-white.png'
-								width={116}
-								height={28}
-								className='hidden h-7 dark:inline-block'
-								alt=''
+								width={70}
+								height={70}
+								className='hidden dark:inline-block'
+								alt='Chancay Express logo'
 							/>
 						</div>
 					</Link>
-
-					<div className='menu-extras'>
-						<div className='menu-item'>
-							{/* <!-- Mobile menu toggle--> */}
-							<Link
-								href='#'
-								className='navbar-toggle'
-								id='isToggle'
-								onClick={toggleMenu}
-							>
-								<div className='lines'>
-									<span></span>
-									<span></span>
-									<span></span>
-								</div>
-							</Link>
-						</div>
-					</div>
 
 					{/* <!--Login button Start--> */}
 					{/* <ul className='buy-button mb-0 list-none'>
@@ -373,14 +169,30 @@ export default function Navbar() {
 							</div>
 						</li>
 					</ul> */}
+					<div className='flex-1'>
+						<form action='/buscar' className='max-w-sm'>
+							<div className='flex items-center gap-2'>
+								<Input
+									placeholder='Buscar negocio...'
+									id='s'
+									name='s'
+									defaultValue={fullTextSearch}
+								/>
+								<div>
+									<Button size='icon'>
+										<SearchIcon />
+									</Button>
+								</div>
+							</div>
+						</form>
+					</div>
 
-					<div
-						id='navigation'
-						className={`${isOpen === true ? "hidden" : "block"}`}
-					>
+					<NavbarMenuExtras />
+
+					<NavbarNavigation>
 						<ul className='navigation-menu justify-end'>
-							<li className='has-submenu parent-menu-item'>
-								<Link href='/'>Home</Link>
+							<li>
+								<Link href={ROUTES.home}>Inicio</Link>
 								{/* <span className='menu-arrow'></span> */}
 								{/* <ul className='submenu'>
 									<li>
@@ -682,14 +494,12 @@ export default function Navbar() {
 							</li> */}
 
 							<li>
-								<Link href='/crear-negocio' className='sub-menu-item'>
-									Crear negocio
-								</Link>
+								<Link href='/crear-negocio'>Crear negocio</Link>
 							</li>
 						</ul>
-					</div>
+					</NavbarNavigation>
 				</div>
 			</nav>
-		</>
+		</NavbarClientProvider>
 	);
 }

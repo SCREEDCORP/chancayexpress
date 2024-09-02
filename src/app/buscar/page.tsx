@@ -1,10 +1,41 @@
+import type { Prisma } from "@prisma/client";
+
 import { db } from "@/server/db";
-import { ProductItem, ProductList } from "./components/product";
+import { ProductItem, ProductList } from "../components/product";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page() {
-	const usuarios = await db.user.findMany();
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: Record<string, string>;
+}) {
+	const fullTextSearch = searchParams.s;
+
+	const usuarios = await db.user.findMany({
+		where: {
+			type: "STORE",
+			OR: fullTextSearch
+				?.trim()
+				.toLowerCase()
+				.split(" ")
+				.flatMap(
+					s =>
+						[
+							{
+								name: {
+									contains: s,
+								},
+							},
+							{
+								nameHandler: {
+									contains: s,
+								},
+							},
+						] satisfies Prisma.UserWhereInput["OR"],
+				),
+		},
+	});
 
 	return (
 		<>
@@ -39,6 +70,12 @@ export default async function Page() {
 			</section> */}
 
 			<section>
+				<div className='container grid grid-cols-1'>
+					<h3 className='mb-4 text-2xl font-semibold leading-snug md:text-3xl md:leading-snug'>
+						Resultados de la busqueda
+					</h3>
+					{/* <p className='mx-auto max-w-xl text-slate-400'>{description}</p> */}
+				</div>
 				<br />
 				<br />
 				<br />

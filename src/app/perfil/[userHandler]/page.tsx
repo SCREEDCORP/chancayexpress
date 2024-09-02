@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import Navbar from "@/app/components/navbar";
 import { db } from "@/server/db";
 import { StoreProducts } from "./store-products";
 
@@ -31,9 +30,9 @@ export default async function CreatorProfile({ params }: Context) {
 
 	return (
 		<>
-			<Navbar />
-			<section className='relative pb-16 md:pb-24 lg:mt-24 '>
-				<div className='container-fluid mt-10 lg:container'>
+			<span className='fixed start-1/2 top-1/2 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-gradient-to-tl from-red-600/20 to-violet-600/20 blur-[200px] ltr:-translate-x-1/2 rtl:translate-x-1/2 dark:from-red-600/40 dark:to-violet-600/40'></span>
+			<section className=''>
+				<div className='container-fluid lg:container'>
 					<div className='profile-banner group relative overflow-hidden text-transparent shadow dark:shadow-gray-700 lg:rounded-xl'>
 						<input
 							id='pro-banner'

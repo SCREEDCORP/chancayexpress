@@ -45,7 +45,8 @@ export default async function CreatorProfile({ params }: Context) {
 
 	return (
 		<>
-			<section className='relative pb-16 md:pb-24 lg:mt-24'>
+			<span className='fixed start-1/2 top-1/2 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-gradient-to-tl from-red-600/20 to-violet-600/20 blur-[200px] ltr:-translate-x-1/2 rtl:translate-x-1/2 dark:from-red-600/40 dark:to-violet-600/40'></span>
+			<section>
 				<div className='container-fluid lg:container '>
 					<div className='profile-banner group relative overflow-hidden text-transparent shadow dark:shadow-gray-700 lg:rounded-xl'>
 						<input
@@ -64,7 +65,7 @@ export default async function CreatorProfile({ params }: Context) {
 
 				<div className='mt-10 justify-center md:flex'>
 					<div className='md:w-full'>
-						<div className='relative -mt-[60px] text-center'>
+						<div className='relative text-center'>
 							<div className='profile-pic group mx-auto w-[112px]'>
 								<input
 									id='pro-img'

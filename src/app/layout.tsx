@@ -1,6 +1,7 @@
 import { Urbanist } from "next/font/google";
-import "./assets/css/materialdesignicons.min.css";
 import "./assets/css/tailwind.css";
+import Footer from "./components/footer";
+import Navbar from "./components/navbar";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -26,8 +27,14 @@ export default function RootLayout({
 				className={`${urbanist.variable} dark font-urbanist text-base text-black dark:bg-slate-900 dark:text-white`}
 			>
 				<Providers>
-					{children}
-					{actions}
+					<main className='flex min-h-screen flex-col'>
+						<Navbar />
+						<div className='relative min-h-screen overflow-hidden pb-16 pt-36 md:pt-48'>
+							{children}
+						</div>
+						{actions}
+						<Footer />
+					</main>
 				</Providers>
 			</body>
 		</html>
